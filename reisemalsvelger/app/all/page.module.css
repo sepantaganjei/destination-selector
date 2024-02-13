@@ -1,19 +1,19 @@
 .main {
-    max-width: 100%;
-    width: 1280px;
-    margin: 0 auto;
-  }
-  
-  .headerContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    height: 500px;
-  }
-  
-  .headerInfo {
-    color: white;
-    text-align: center;
-    flex-grow: 1;
-  }
+  max-width: 100%;
+  width: 1280px;
+  margin: 0 auto;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 500px;
+}
+
+.headerInfo {
+  color: white;
+  text-align: center;
+  flex-grow: 1;
+}
