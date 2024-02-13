@@ -1,0 +1,18 @@
+.categoryList {
+    display: flex;
+    gap: 15px;
+    flex-wrap: nowrap;
+    overflow: auto;
+}
+
+.categoryItem {
+    display: flex;
+    flex-shrink: 0;
+    align-items: end;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    background-size: cover;
+    width: 400px;
+    height: 200px;
+}
