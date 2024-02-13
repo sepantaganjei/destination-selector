@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center; /* Add this line */
+    border-bottom: 1px solid black;
+}
+
+.header {
+    font-size: 22px;
+    text-align: left;
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: right;
+}
+.input{
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.button {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: lightblue;
+    border-color: white;
+    box-shadow: none;
+}
