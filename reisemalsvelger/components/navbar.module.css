@@ -1,0 +1,35 @@
+
+  .navbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+    color: white;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-container img {
+    height: 30px; 
+    margin-right: 10px;
+  }
+  
+  .title-container h1 {
+    margin: 0;
+  }
+
+  .login-button-container{
+    margin-right: 30px;
+  }
+  
+
+
+ 
