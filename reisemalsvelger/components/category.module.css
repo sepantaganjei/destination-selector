@@ -1,18 +1,16 @@
-.categoryList {
+.container {
+  margin: 1rem 0;
+}
+
+.title {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.travelDestinationList {
   display: flex;
   gap: 15px;
   flex-wrap: nowrap;
   overflow: auto;
-}
-
-.categoryItem {
-  display: flex;
-  flex-shrink: 0;
-  align-items: end;
-  color: white;
-  font-size: 30px;
-  font-weight: bold;
-  background-size: cover;
-  width: 400px;
-  height: 200px;
+  padding: 15px 0;
 }
