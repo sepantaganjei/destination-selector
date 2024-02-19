@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <nav className={styles["navbar-container"]}>
       <div className={styles["logo-container"]}>
-        <Image
+        <img
           title="Image"
           alt="logo"
           src="https://static.vecteezy.com/system/resources/thumbnails/024/553/534/small/lion-head-logo-mascot-wildlife-animal-illustration-generative-ai-png.png"
