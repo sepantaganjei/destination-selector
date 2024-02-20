@@ -6,10 +6,9 @@ import Navbar from "@/components/Navbar";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <>
       <HomeBanner />
       <Category />
-      <Navbar />
-    </main>
+    </>
   );
 }
