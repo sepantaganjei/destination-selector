@@ -5,9 +5,9 @@ import Category from "@/components/Category";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <HomeBanner/>
-      <Category/>
-    </main>
+      <main className={styles.main}>
+        <HomeBanner/>
+        <Category/>
+      </main>
   );
 }
