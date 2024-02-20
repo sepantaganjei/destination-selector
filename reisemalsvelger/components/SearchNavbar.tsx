@@ -7,7 +7,7 @@ const SearchNavbar = () => {
     <div className={styles.container}>
       <div className={styles.btnContainer}>
         <button id={styles.destinationBtn}>
-          <Link href={"hduwhdkqw"}>
+          <Link href="/all">
             <p>Se alle destinasjoner</p>
             <FaArrowRightLong id={styles.arrow} />
           </Link>
