@@ -1,31 +1,10 @@
-import Link from "next/link";
 import styles from "./category.module.css";
 
-type Travel = {
-  id: number;
-  name: string;
-  category: string;
-  image: string;
-};
-
-type CategoryItemProps = {
-  reisedestinasjon: Travel;
-};
-
-const CategoryItem = ({ reisedestinasjon }: CategoryItemProps) => {
-  return (
-    <Link
-      href={`/destinasjoner/${reisedestinasjon.id}`}
-      className={styles.categoryItem}
-      style={{ backgroundImage: `url(${reisedestinasjon.image})` }}
-    >
-      {reisedestinasjon.name}
-    </Link>
-  );
-};
+import TravelDestinationCard from "./TravelDestinationCard";
+import type { TravelDestination } from "@/types/TravelDestination";
 
 const Category = () => {
-  const reisedestinasjoner: Travel[] = [
+  const reisedestinasjoner: TravelDestination[] = [
     {
       id: 0,
       name: "Oslo",
@@ -71,14 +50,17 @@ const Category = () => {
   ];
 
   return (
-    <>
-      <p>Historisk</p>
-      <div className={styles.categoryList}>
-        {reisedestinasjoner.map((reisedestinasjon, i) => (
-          <CategoryItem key={i} reisedestinasjon={reisedestinasjon} />
+    <div className={styles.container}>
+      <p className={styles.title}>Historisk</p>
+      <div className={styles.travelDestinationList}>
+        {reisedestinasjoner.map((travelDestination, i) => (
+          <TravelDestinationCard
+            key={i}
+            travelDestination={travelDestination}
+          />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

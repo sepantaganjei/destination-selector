@@ -10,6 +10,7 @@ export default function Home() {
       <HomeBanner />
       <SearchNavbar />
       <Category />
+      <Navbar />
     </main>
   );
 }
