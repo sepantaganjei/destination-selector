@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import styles from "./filter.module.css";
 import Link from "next/link";
 
@@ -6,6 +7,7 @@ type Travel = {
   name: string;
   category: string;
   image: string;
+  tags?: string[];
 };
 
 type CategoryItemProps = {
@@ -50,7 +52,7 @@ const Filtrer = () => {
     {
       id: 3,
       name: "Ålesund",
-      category: "historisk",
+      category: "nei",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/7/71/Vista_de_%C3%85lesund_desde_Aksla%2C_Noruega%2C_2019-09-01%2C_DD_16.jpg",
     },
@@ -69,22 +71,47 @@ const Filtrer = () => {
         "https://www.stavanger.kommune.no/siteassets/om-kommunen/stavanger.jpg?width=1024&height=1024&transform=DownFit&h=812b1482ab039b1981e34f5c7b2302237fb2baaa",
     },
   ];
+  const [selectedCategory, setSelectedCategory] = useState("0");
+  const [selectedTag, setSelectedTag] = useState("0");
+  const [filteredDestinations, setFilteredDestinations] =
+    useState<Travel[]>(reisedestinasjoner);
+  const handleFilter = (e: React.FormEvent) => {
+    e.preventDefault();
+    let filtered = reisedestinasjoner;
+
+    if (selectedCategory !== "0") {
+      filtered = filtered.filter((dest) => dest.category === selectedCategory);
+    }
+
+    if (selectedTag !== "0") {
+      filtered = filtered.filter((dest) => dest.tags?.includes(selectedTag));
+    }
+
+    setFilteredDestinations(filtered);
+  };
+
   return (
     <div>
       <div className={styles.container}>
         <header className={styles.header}>Alle destinasjoner</header>
         <div>
-          <form className={styles.form}>
-            <select className={styles.pulldown}>
+          <form className={styles.form} onSubmit={handleFilter}>
+            <select
+              className={styles.pulldown}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
               <option value="0">Velg kategori</option>
-              <option value="1">Historisk</option>
-              <option value="2">Kultur</option>
-              <option value="3">Natur</option>
-              <option value="4">Aktiviteter</option>
+              <option value="historisk">Historisk</option>
+              <option value="Kultur">Kultur</option>
+              <option value="Natur">Natur</option>
+              <option value="Aktiviteter">Aktiviteter</option>
             </select>
-            <select className={styles.pulldown}>
+            <select
+              className={styles.pulldown}
+              onChange={(e) => setSelectedTag(e.target.value)}
+            >
               <option value="0">Velg Tag</option>
-              <option value="1">Skiheis</option>
+              <option value="">Skiheis</option>
               <option value="2">Kultur</option>
               <option value="3">Natur</option>
               <option value="4">Aktiviteter</option>
@@ -94,7 +121,7 @@ const Filtrer = () => {
         </div>
       </div>
       <div className={styles.categoryList}>
-        {reisedestinasjoner.map((reisedestinasjon, i) => (
+        {filteredDestinations.map((reisedestinasjon, i) => (
           <CategoryItem key={i} reisedestinasjon={reisedestinasjon} />
         ))}
       </div>
