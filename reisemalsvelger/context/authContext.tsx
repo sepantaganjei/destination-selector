@@ -9,7 +9,7 @@ interface AuthContextType {
   loading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: false });
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
 
 export const useAuth = () => useContext(AuthContext);
 

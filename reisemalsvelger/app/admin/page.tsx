@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { BaseData, postData, getData, deleteData, uploadImageAndGetURL, deleteImage, getTags } from '../firebaseAPI';
+import { useAuth } from '../../context/authContext';
 
 
 // Definerer interfacet for TravelDestination
@@ -13,12 +15,33 @@ interface TravelDestination extends BaseData {
 };
 
 const AdminPage = () => {
+  const router = useRouter();
+  const { user, loading } = useAuth();
+  // admin mail: admin@fjellogfjord.com
+  // password: admin123
+
+  // test mail: test@fjellogfjord.com
+  // password: test123
+
+  const ADMIN_UID = "uMaajv7vENUsjxeki4PHiZNONXy1";
+
   const [gatherData, setGatherData] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [destinations, setDestinations] = useState<TravelDestination[]>([]);
   const [destination, setDestination] = useState<TravelDestination>({ name: '', location: '', description: '', imageUrl: '', tags: []});
   const [tags, setTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]); 
+
+
+
+  // Hvis man ikke er admin
+  useEffect(() => {
+    if (!loading) {
+      if (user?.uid !== ADMIN_UID || user?.uid == undefined) {
+        router.push('/'); 
+      }
+  }
+  }, [user, loading]);
 
   // Oppdaterer tilstanden basert på endringer i input-feltene
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
