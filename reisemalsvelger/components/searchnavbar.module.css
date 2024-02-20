@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  overflow: auto;
+  justify-content: end;
+}
+
+#destinationBtn {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  color: black;
+  padding-top: 20px;
+}
+
+#destinationBtn p {
+  margin: 0;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#arrow {
+  vertical-align: bottom;
+  padding-bottom: 1%;
+}
+
+#destinationBtn a {
+  color: inherit;
+}
