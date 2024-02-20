@@ -3,9 +3,9 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
   padding-bottom: 7px;
   border-bottom: 1px solid black;
+  padding-top: 10px;
 }
 
 .header {
