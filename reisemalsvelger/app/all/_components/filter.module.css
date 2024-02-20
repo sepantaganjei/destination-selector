@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 7px;
+  border-bottom: 1px solid black;
+  padding-top: 60px; /* Should probably be replaced, inorder to not make navbar hide contents*/
+}
+
+.header {
+  font-size: 30px;
+  text-align: left;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: right;
+}
+.input {
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.button {
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: lightblue;
+  border-color: white;
+  box-shadow: none;
+}
+
+.pulldown {
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.categoryList {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.categoryItem {
+  display: grid;
+  flex-shrink: 0;
+  align-items: end;
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  background-size: cover;
+  width: 400px;
+  height: 200px;
+}

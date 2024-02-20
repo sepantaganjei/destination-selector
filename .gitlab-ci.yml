@@ -1,0 +1,30 @@
+stages:
+  - build
+  - lint
+
+build:
+  stage: build
+  image: node:latest
+  cache:
+    paths:
+      - reisemalsvelger/node_modules/
+  script:
+    - cd reisemalsvelger
+    - npm install
+    - npm run build
+
+lint_format:
+  stage: lint
+  image: node:latest
+  script:
+    - cd reisemalsvelger
+    - npm ci
+    - npm run format:check
+
+lint_eslint:
+  stage: lint
+  image: node:latest
+  script:
+    - cd reisemalsvelger
+    - npm ci
+    - npm run lint
