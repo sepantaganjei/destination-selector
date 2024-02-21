@@ -1,6 +1,9 @@
-export type TravelDestination = {
-  id: number;
+import { BaseData } from "@/app/firebaseAPI";
+
+export interface TravelDestination extends BaseData {
   name: string;
-  category: string;
-  image: string;
-};
+  location: string;
+  description: string;
+  imageUrl?: string;
+  tags: string[];
+}

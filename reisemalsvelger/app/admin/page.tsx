@@ -11,15 +11,9 @@ import {
   getTags,
 } from "../firebaseAPI";
 import { useAuth } from "../../context/authContext";
+import { TravelDestination } from "@/types/TravelDestination";
 
 // Definerer interfacet for TravelDestination
-interface TravelDestination extends BaseData {
-  name: string;
-  location: string;
-  description: string;
-  imageUrl?: string;
-  tags: string[];
-}
 
 const AdminPage = () => {
   const router = useRouter();
