@@ -13,7 +13,7 @@ const TravelDestinationCard = ({
     <Link
       href={`/destinasjoner/${travelDestination.id}`}
       className={styles.card}
-      style={{ backgroundImage: `url(${travelDestination.image})` }}
+      style={{ backgroundImage: `url(${travelDestination.imageUrl})` }}
     >
       <div className={styles.vignette}></div>
       <span className={styles.name}>{travelDestination.name}</span>
