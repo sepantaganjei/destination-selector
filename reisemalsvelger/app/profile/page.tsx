@@ -12,7 +12,7 @@ const UserPage = () => {
   useEffect(() => {
     if (!loading && !user) {
       // Sjekk om ikke laster og ingen bruker
-      //router.push('/');
+      router.push("/login");
     }
     console.log(user, loading);
   }, [user, loading, router]); // Inkluder loading i avhengighetene

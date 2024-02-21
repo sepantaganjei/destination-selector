@@ -1,25 +1,27 @@
 import styles from "./navbar.module.css";
 import { FaUserAlt } from "react-icons/fa";
-import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
     <nav className={styles["navbar-container"]}>
-      <div className={styles["logo-container"]}>
+      <Link href="/" className={styles["logo-container"]}>
         <img
           title="Image"
           alt="logo"
-          src="https://static.vecteezy.com/system/resources/thumbnails/024/553/534/small/lion-head-logo-mascot-wildlife-animal-illustration-generative-ai-png.png"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0lahmL7dYeyPHJEwrOgsejj77EtDzUlcOSg&usqp=CAU"
         />
         <div className={styles["title-container"]}>
-          <h1>Ferdfinner</h1>
+          <h1>Fjell og Fjord</h1>
         </div>
-      </div>
+      </Link>
 
       <div className={styles["login-button-container"]}>
-        <button title="Login">
-          <FaUserAlt />
-        </button>
+        <Link href="/profile">
+          <button title="Login">
+            <FaUserAlt />
+          </button>
+        </Link>
       </div>
     </nav>
   );

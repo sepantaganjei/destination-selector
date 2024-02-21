@@ -184,7 +184,11 @@ const AdminPage = () => {
       <div>
         {destinations.map((dest) => (
           <div key={dest.id}>
-            <img src={dest.imageUrl} alt={dest.name} />
+            <img
+              style={{ width: "800px" }}
+              src={dest.imageUrl}
+              alt={dest.name}
+            />
             <h3>NAVN: {dest.name}</h3>
             <p>LOKASJON: {dest.location}</p>
             <p>BESKRIVELSE: {dest.description}</p>
