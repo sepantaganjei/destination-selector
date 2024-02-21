@@ -3,13 +3,15 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background-image: url("https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg");
+  background-image: url("https://res.cloudinary.com/simpleview/image/upload/v1470836048/clients/norway/naeroyfjorden_fjord_norway_2_1_001b9127-14ad-4b3d-99b6-29d8b3aae412.jpg");
   background-size: 100%;
   height: 500px;
+  border-radius: 5px;
 }
 
 .info {
   color: white;
   text-align: center;
   flex-grow: 1;
+  text-shadow: 4px 4px 4px black;
 }
