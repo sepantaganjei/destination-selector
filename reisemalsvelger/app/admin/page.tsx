@@ -1,9 +1,16 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { BaseData, postData, getData, deleteData, uploadImageAndGetURL, deleteImage, getTags } from '../firebaseAPI';
-import { useAuth } from '../../context/authContext';
-
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  BaseData,
+  postData,
+  getData,
+  deleteData,
+  uploadImageAndGetURL,
+  deleteImage,
+  getTags,
+} from "../firebaseAPI";
+import { useAuth } from "../../context/authContext";
 
 // Definerer interfacet for TravelDestination
 interface TravelDestination extends BaseData {
@@ -12,7 +19,7 @@ interface TravelDestination extends BaseData {
   description: string;
   imageUrl?: string;
   tags: string[];
-};
+}
 
 const AdminPage = () => {
   const router = useRouter();
@@ -28,34 +35,38 @@ const AdminPage = () => {
   const [gatherData, setGatherData] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [destinations, setDestinations] = useState<TravelDestination[]>([]);
-  const [destination, setDestination] = useState<TravelDestination>({ name: '', location: '', description: '', imageUrl: '', tags: []});
+  const [destination, setDestination] = useState<TravelDestination>({
+    name: "",
+    location: "",
+    description: "",
+    imageUrl: "",
+    tags: [],
+  });
   const [tags, setTags] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]); 
-
-
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // Hvis man ikke er admin
   useEffect(() => {
     if (!loading) {
       if (user?.uid !== ADMIN_UID || user?.uid == undefined) {
-        router.push('/'); 
+        router.push("/");
       }
-  }
+    }
   }, [user, loading]);
 
   // Oppdaterer tilstanden basert på endringer i input-feltene
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setDestination(prevState => ({
+    setDestination((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
   const toggleTag = (tag: string) => {
-    setSelectedTags(prev => {
+    setSelectedTags((prev) => {
       if (prev.includes(tag)) {
-        return prev.filter(t => t !== tag); // Fjerner taggen hvis den allerede er valgt
+        return prev.filter((t) => t !== tag); // Fjerner taggen hvis den allerede er valgt
       } else {
         return [...prev, tag]; // Legger til taggen hvis den ikke er valgt
       }
@@ -66,11 +77,22 @@ const AdminPage = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const imageUrl = selectedFile ? await uploadImageAndGetURL(selectedFile) : '';
+      const imageUrl = selectedFile
+        ? await uploadImageAndGetURL(selectedFile)
+        : "";
       const newDestination = { ...destination, imageUrl, tags: selectedTags }; // Bruker selectedTags for tags
-      const docId = await postData<TravelDestination>('travelDestination', newDestination);
+      const docId = await postData<TravelDestination>(
+        "travelDestination",
+        newDestination,
+      );
       console.log(`Ny destinasjon lagt til med ID: ${docId}`);
-      setDestination({ name: '', location: '', description: '', imageUrl: '', tags: [] });
+      setDestination({
+        name: "",
+        location: "",
+        description: "",
+        imageUrl: "",
+        tags: [],
+      });
       setSelectedTags([]); // Nullstiller valgte tags
       setSelectedFile(null);
       setGatherData(true);
@@ -81,26 +103,30 @@ const AdminPage = () => {
   };
 
   const fetchTags = async () => {
-    const fetchedTags = await getTags('h5tsqyxe5oB5BVM0f0St');
+    const fetchedTags = await getTags("h5tsqyxe5oB5BVM0f0St");
     setTags(fetchedTags);
   };
 
   const fetchDestinations = async () => {
-    const data = await getData<TravelDestination>('travelDestination');
+    const data = await getData<TravelDestination>("travelDestination");
     setDestinations(data);
   };
-  
+
   const handleDelete = async (id: string) => {
-    await deleteData('travelDestination', id);
-    await deleteImage(destinations.find(destination => destination.id === id)?.imageUrl || '');
-    setDestinations(prev => prev.filter(destination => destination.id !== id));
+    await deleteData("travelDestination", id);
+    await deleteImage(
+      destinations.find((destination) => destination.id === id)?.imageUrl || "",
+    );
+    setDestinations((prev) =>
+      prev.filter((destination) => destination.id !== id),
+    );
   };
 
   // Hent reisemål fra databasen første gang siden lastes
   useEffect(() => {
     fetchTags();
     fetchDestinations();
-  }, []); 
+  }, []);
 
   // Hent reisemål fra databasen etter at et nytt reisemål er lagt til
   useEffect(() => {
@@ -116,55 +142,71 @@ const AdminPage = () => {
     }
   };
 
-return (
-  <>
-    <form onSubmit={handleSubmit}>
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
         <input
-        type="text"
-        name="name"
-        value={destination.name}
-        onChange={handleChange}
-        placeholder="Navn på reisemål"
-        required
+          type="text"
+          name="name"
+          value={destination.name}
+          onChange={handleChange}
+          placeholder="Navn på reisemål"
+          required
         />
         <input
-        type="text"
-        name="location"
-        value={destination.location}
-        onChange={handleChange}
-        placeholder="Sted"
-        required
+          type="text"
+          name="location"
+          value={destination.location}
+          onChange={handleChange}
+          placeholder="Sted"
+          required
         />
         <input
-        type="text"
-        name="description"
-        value={destination.description || ''}
-        onChange={handleChange}
-        placeholder="Beskrivelse (valgfritt)"
+          type="text"
+          name="description"
+          value={destination.description || ""}
+          onChange={handleChange}
+          placeholder="Beskrivelse (valgfritt)"
         />
-       {tags.map((tag, index) => (
-          <span key={index} onClick={() => toggleTag(tag)} style={{cursor: 'pointer', padding: '5px', border: selectedTags.includes(tag) ? '2px solid blue' : '1px solid grey', margin: '2px'}}>
+        {tags.map((tag, index) => (
+          <span
+            key={index}
+            onClick={() => toggleTag(tag)}
+            style={{
+              cursor: "pointer",
+              padding: "5px",
+              border: selectedTags.includes(tag)
+                ? "2px solid blue"
+                : "1px solid grey",
+              margin: "2px",
+            }}
+          >
             {tag}
           </span>
         ))}
         <input type="file" onChange={handleImageChange} />
         <button type="submit">Last opp reisemål</button>
-    </form>
-    <div>
+      </form>
+      <div>
         {destinations.map((dest) => (
           <div key={dest.id}>
-            <img src={dest.imageUrl} alt={dest.name}/>
+            <img src={dest.imageUrl} alt={dest.name} />
             <h3>NAVN: {dest.name}</h3>
             <p>LOKASJON: {dest.location}</p>
             <p>BESKRIVELSE: {dest.description}</p>
-            <p>TAGS: {
-              dest.tags && dest.tags.map((tag, index) => (
-                <span key={tag}>
-                  {tag}{index < dest.tags.length - 1 ? ', ' : ''}
-                </span>
-              ))
-            }</p>
-            <button onClick={() => dest.id && handleDelete(dest.id)}>Slett</button>
+            <p>
+              TAGS:{" "}
+              {dest.tags &&
+                dest.tags.map((tag, index) => (
+                  <span key={tag}>
+                    {tag}
+                    {index < dest.tags.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+            </p>
+            <button onClick={() => dest.id && handleDelete(dest.id)}>
+              Slett
+            </button>
           </div>
         ))}
       </div>

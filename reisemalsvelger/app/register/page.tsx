@@ -1,20 +1,20 @@
 "use client";
-import { useState } from 'react';
-import { registerUser } from '../firebaseAPI'; 
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { registerUser } from "../firebaseAPI";
+import { useRouter } from "next/navigation";
 
 const RegisterPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault(); // Forhindrer standard form submit handling
-    setError(''); // Nullstill eventuelle tidligere feilmeldinger
+    setError(""); // Nullstill eventuelle tidligere feilmeldinger
     try {
       await registerUser(email, password);
-      router.push('/profile');
+      router.push("/profile");
     } catch (error: any) {
       setError(error.message);
     }
@@ -26,17 +26,27 @@ const RegisterPage = () => {
       <form onSubmit={handleRegister}>
         <div>
           <label>E-post</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Passord</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
         {error && <p>{error}</p>}
         <button type="submit">Registrer</button>
       </form>
       <h3>Har du bruker?</h3>
-      <button onClick={() => router.push('/create')}>Logg inn her</button> 
+      <button onClick={() => router.push("/create")}>Logg inn her</button>
     </div>
   );
 };

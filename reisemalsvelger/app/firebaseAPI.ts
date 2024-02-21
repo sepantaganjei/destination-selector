@@ -1,9 +1,24 @@
 // DATABASE
-import { db, storage, auth } from './firebaseConfig';
-import { collection, getDocs, addDoc, deleteDoc, doc, getDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { db, storage, auth } from "./firebaseConfig";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 // INNLOGGING
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 // BaseData er en generisk type
 export interface BaseData {
@@ -21,7 +36,11 @@ export interface TagsData {
 // Registrer bruker
 export const registerUser = async (email: string, password: string) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
     console.log("Registrert bruker:", userCredential.user);
   } catch (error) {
     console.error("Registreringsfeil:", error);
@@ -31,7 +50,11 @@ export const registerUser = async (email: string, password: string) => {
 // Logg inn bruker
 export const loginUser = async (email: string, password: string) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
     console.log("Innlogget bruker:", userCredential.user);
   } catch (error) {
     console.error("Innloggingsfeil:", error);
@@ -47,7 +70,6 @@ export const logoutUser = async () => {
     console.error("Utloggingsfeil:", error);
   }
 };
-
 
 // HENT DATA FRA FIRESTORE: TAGS
 export const getTags = async (docId: string): Promise<string[]> => {
@@ -65,34 +87,46 @@ export const getTags = async (docId: string): Promise<string[]> => {
   }
 };
 
-
 // HENT/SEND/SLETT DATA FRA FIRESTORE: REISEDESTINASJONER
-export const getData = async <T extends BaseData>(collectionId: string): Promise<T[]> => {
+export const getData = async <T extends BaseData>(
+  collectionId: string,
+): Promise<T[]> => {
   const querySnapshot = await getDocs(collection(db, collectionId));
-  const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as T[];
+  const data = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as T[];
   return data;
 };
 
-export const postData = async <T extends BaseData>(collectionId: string, newData: T): Promise<string> => {
+export const postData = async <T extends BaseData>(
+  collectionId: string,
+  newData: T,
+): Promise<string> => {
   const docRef = await addDoc(collection(db, collectionId), newData);
   return docRef.id; // Returnerer ID-en til det nye dokumentet
 };
 
-export const deleteData = async (collectionId: string, docId: string): Promise<void> => {
+export const deleteData = async (
+  collectionId: string,
+  docId: string,
+): Promise<void> => {
   await deleteDoc(doc(db, collectionId, docId));
 };
 
 // Funksjon for å laste opp et bilde og returnere URL-en til bildet
-export const uploadImageAndGetURL = async (uploadedFile: File): Promise<string> => {
+export const uploadImageAndGetURL = async (
+  uploadedFile: File,
+): Promise<string> => {
   const storageRef = ref(storage, `images/${uploadedFile.name}`);
   try {
     const snapshot = await uploadBytes(storageRef, uploadedFile);
-    console.log('Upload complete for', uploadedFile.name);
+    console.log("Upload complete for", uploadedFile.name);
     const downloadURL = await getDownloadURL(snapshot.ref);
-    console.log('Download URL', downloadURL);
+    console.log("Download URL", downloadURL);
     return downloadURL;
   } catch (error) {
-    console.error('Error in uploadImageAndGetURL:', error);
+    console.error("Error in uploadImageAndGetURL:", error);
     throw error; // Re-throw the error to handle it in the calling function
   }
 };
