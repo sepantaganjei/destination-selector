@@ -46,7 +46,7 @@ const RegisterPage = () => {
         <button type="submit">Registrer</button>
       </form>
       <h3>Har du bruker?</h3>
-      <button onClick={() => router.push("/create")}>Logg inn her</button>
+      <button onClick={() => router.push("/login")}>Logg inn her</button>
     </div>
   );
 };
