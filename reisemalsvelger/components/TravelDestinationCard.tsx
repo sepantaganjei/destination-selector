@@ -11,7 +11,7 @@ const TravelDestinationCard = ({
 }: TravelDestinationCardProps) => {
   return (
     <Link
-      href={`/destinasjoner/${travelDestination.id}`}
+      href={`/destinations/${travelDestination.id}`}
       className={styles.card}
       style={{ backgroundImage: `url(${travelDestination.imageUrl})` }}
     >
