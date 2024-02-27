@@ -42,6 +42,18 @@ export const registerUser = async (email: string, password: string) => {
       password,
     );
     console.log("Registrert bruker:", userCredential.user);
+
+    // Opprett et dokument i Firestore for den nye brukeren
+    const userProfile = {
+      email: userCredential.user.email,
+      uid: userCredential.user.uid,
+      createdAt: new Date(),
+      reisedestinasjoner: [],
+      anmeldelser: [],
+    };
+    await addDoc(collection(db, "userProfiles"), userProfile);
+
+    console.log("Brukerprofil opprettet i Firestore");
   } catch (error) {
     console.error("Registreringsfeil:", error);
   }
@@ -68,6 +80,18 @@ export const logoutUser = async () => {
     console.log("Bruker logget ut");
   } catch (error) {
     console.error("Utloggingsfeil:", error);
+  }
+};
+
+// Hent bruker-dokument fra Firestore
+export const getUserProfile = async (uid: string): Promise<any> => {
+  const querySnapshot = await getDocs(collection(db, "userProfiles"));
+  const userProfileDoc = querySnapshot.docs.find(doc => doc.data().uid === uid);
+  if (userProfileDoc) {
+    return { id: userProfileDoc.id, ...userProfileDoc.data() };
+  } else {
+    console.log("Ingen brukerprofil funnet for gitt UID");
+    return null;
   }
 };
 
