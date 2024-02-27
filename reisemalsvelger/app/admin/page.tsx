@@ -24,7 +24,7 @@ const AdminPage = () => {
   // test mail: test@fjellogfjord.com
   // password: test123
 
-  const ADMIN_UID = "uMaajv7vENUsjxeki4PHiZNONXy1";
+  const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_UID || "";
 
   const [gatherData, setGatherData] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
