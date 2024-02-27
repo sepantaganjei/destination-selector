@@ -4,6 +4,12 @@ import { useAuth } from "@/context/authContext";
 import { TravelDestination } from "@/types/TravelDestination";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { BsPinAngle } from "react-icons/bs";
+import styles from "./styles.module.css";
+import { BsPinAngleFill } from "react-icons/bs";
+
+
+
 
 const DestinationPage = ({ params }: any) => {
   const { destination } = params;
@@ -36,9 +42,25 @@ const DestinationPage = ({ params }: any) => {
     return <p>Laster...</p>;
   }
 
+  const pinDestination = () => {
+    
+  };
+
+
   return (
     <div>
+      <div className={styles.mark}> {
+
+      }
       <h1>{travelDestination.name}</h1>
+      <button onClick= {pinDestination} id = {styles.pin}> 
+        <BsPinAngle id = {styles.icon} />
+        <p> 
+
+        </p>
+      </button> 
+      </div>
+
       <img src={travelDestination?.imageUrl} />
       <p>
         <b>Beskrivelse:</b> {travelDestination.description}
