@@ -13,14 +13,13 @@ const UserPage = () => {
   useEffect(() => {
     if (!loading) {
       const isNotLoggedIn = !user;
-  
+
       if (isNotLoggedIn) {
         console.log(user, loading);
         router.push("/login");
       }
     }
   }, [user, loading, router]);
-  
 
   const handleLogout = async () => {
     await logoutUser();
@@ -42,7 +41,9 @@ const UserPage = () => {
           <h1>Brukerprofil</h1>
           <p>Velkommen, {user.email}</p>
           {user?.uid === ADMIN_UID && (
-            <button onClick={handleAdmin}>Administrer reisedestinasjoner</button>
+            <button onClick={handleAdmin}>
+              Administrer reisedestinasjoner
+            </button>
           )}
           <button onClick={handleLogout}>Logg ut</button>
         </div>
