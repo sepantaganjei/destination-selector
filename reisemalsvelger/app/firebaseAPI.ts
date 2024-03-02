@@ -86,7 +86,9 @@ export const logoutUser = async () => {
 // Hent bruker-dokument fra Firestore
 export const getUserProfile = async (uid: string): Promise<any> => {
   const querySnapshot = await getDocs(collection(db, "userProfiles"));
-  const userProfileDoc = querySnapshot.docs.find(doc => doc.data().uid === uid);
+  const userProfileDoc = querySnapshot.docs.find(
+    (doc) => doc.data().uid === uid,
+  );
   if (userProfileDoc) {
     return { id: userProfileDoc.id, ...userProfileDoc.data() };
   } else {

@@ -40,40 +40,63 @@ const DestinationPage = ({ params }: any) => {
     fetchDestinations();
   }, []);
 
+  const test = 2; //Only for testing purposes, should be replaced with the rating from the database
+
   if (travelDestination == null) {
     return <p>Laster...</p>;
   }
 
   return (
-    <div className={styles.mainComponent}>
-      <div className={styles.destination}>
-        <h1>{travelDestination.name}</h1>
-        <img src={travelDestination?.imageUrl} className={styles.image} />
-        <p>
-          <b>Beskrivelse:</b> {travelDestination.description}
-        </p>
-        <p>
-          <b>Sted:</b> {travelDestination.location}
-        </p>
-        <p>
-          <b>Tags:</b>{" "}
-          {travelDestination.tags.map((tag) => (
-            <span key={tag}>{tag} </span>
-          ))}
-        </p>
+    <div>
+      <div className={styles.mainComponent}>
+        <div className={styles.destination}>
+          <h1>{travelDestination.name}</h1>
+          <img src={travelDestination?.imageUrl} className={styles.image} />
+
+          <p>
+            <b>Sted:</b> {travelDestination.location}
+          </p>
+          <p>
+            <b>Tags:</b>{" "}
+            {travelDestination.tags.map((tag) => (
+              <span key={tag}>{tag} </span>
+            ))}
+          </p>
+          <p>
+            <b>Beskrivelse:</b> {travelDestination.description}
+          </p>
+        </div>
+        <div className={styles.commentSection}>
+          <form>
+            <h2>Gi din anmeldelse</h2>
+            <div className="App">
+              <Rating onClick={handleRating} />
+            </div>
+            <textarea
+              placeholder="Skriv en anmeldelse..."
+              className={styles.commentInput}
+            />
+            <button type="submit">Legg til anmeldelse</button>
+          </form>
+        </div>
       </div>
-      <div className={styles.commentSection}>
-        <form>
-          <h2>Gi din vurderings</h2>
-          <div className="App">
-            <Rating onClick={handleRating} />
-          </div>
-          <textarea
-            placeholder="Skriv en kommentar"
-            className={styles.commentInput}
-          />
-          <button>Legg til kommentar</button>
-        </form>
+      <div className={styles.showComments}>
+        <h2>Anmeldelser</h2>
+        <div className={styles.comment}>
+          <p>
+            <b>Navn:</b> Navn
+          </p>
+          <p>
+            <b>Anmeldelse:</b> Anmeldelse
+          </p>
+          <p>
+            <b>Rating:</b>
+            <Rating
+              initialValue={test} // Set the initial value from the database
+              readonly={true} // Make the rating read-only
+            />
+          </p>
+        </div>
       </div>
     </div>
   );
