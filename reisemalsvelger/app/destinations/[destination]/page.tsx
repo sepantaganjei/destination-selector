@@ -4,7 +4,7 @@ import { useAuth } from "@/context/authContext";
 import { TravelDestination } from "@/types/TravelDestination";
 import { Review } from "@/types/Review";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
 import { Rating } from "react-simple-star-rating";
 
@@ -17,6 +17,7 @@ const DestinationPage = ({ params }: any) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [description, setDescription] = useState<string>("");
   const router = useRouter();
+  const textfieldref = useRef<HTMLTextAreaElement>(null);
 
   const fetchDestinations = async () => {
     let data = await getData<TravelDestination>("travelDestination");
@@ -68,16 +69,17 @@ const DestinationPage = ({ params }: any) => {
         destinationId: destination,
       };
       const docId = await postData<Review>("reviews", newReview);
-      setRating(0);
+      setRating(0); //Resetter ikke det bruker ser tho
       setDescription("");
       setGatherData(true);
+      if (textfieldref.current) {
+        textfieldref.current.value = "";
+      }
       event.currentTarget.reset();
     } catch (error) {
       console.error("Error adding review: ", error);
       setGatherData(false);
     }
-    setRating(0);
-    setDescription("");
   };
   //Oppdaterer tilstanden basert på endringer i textarea-feltet
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -114,6 +116,7 @@ const DestinationPage = ({ params }: any) => {
               className={styles.commentInput}
               name="description"
               required
+              ref={textfieldref}
               onChange={handleChange}
             />
             <button type="submit">Legg til anmeldelse</button>
