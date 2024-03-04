@@ -62,8 +62,11 @@ const DestinationPage = ({ params }: any) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      if (user == null) {
+        throw new Error("User not logged in");
+      }
       const newReview = {
-        name: "test", //legge til denne funksjonaliteten
+        name: user.email || "",
         description: description,
         rating: rating,
         destinationId: destination,
@@ -72,10 +75,10 @@ const DestinationPage = ({ params }: any) => {
       setRating(0); //Resetter ikke det bruker ser tho
       setDescription("");
       setGatherData(true);
+      window.location.reload(); // Oppdaterer siden
       if (textfieldref.current) {
         textfieldref.current.value = "";
       }
-      event.currentTarget.reset();
     } catch (error) {
       console.error("Error adding review: ", error);
       setGatherData(false);
@@ -125,20 +128,24 @@ const DestinationPage = ({ params }: any) => {
       </div>
       <div className={styles.showComments}>
         <h2>Anmeldelser</h2>
-        {reviews.map((review) => (
-          <div className={styles.comment} key={review.id}>
-            <p>
-              <b>Navn:</b> {review.name}
-            </p>
-            <p>
-              <b>Anmeldelse:</b> {review.description}
-            </p>
-            <p>
-              <b>Rating:</b>
-              <Rating initialValue={review.rating} readonly={true} />
-            </p>
-          </div>
-        ))}
+        {reviews.length === 0 ? (
+          <p>{travelDestination.name} har ingen anmeldelser</p>
+        ) : (
+          reviews.map((review) => (
+            <div className={styles.comment} key={review.id}>
+              <p>
+                <b>Bruker:</b> {review.name}
+              </p>
+              <p>
+                <b></b> {review.description}
+              </p>
+              <p>
+                <b></b>
+                <Rating initialValue={review.rating} readonly={true} />
+              </p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
