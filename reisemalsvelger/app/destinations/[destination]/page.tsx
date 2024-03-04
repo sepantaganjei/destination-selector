@@ -1,7 +1,8 @@
 "use client";
-import { getData } from "@/app/firebaseAPI";
+import { getData, postData } from "@/app/firebaseAPI";
 import { useAuth } from "@/context/authContext";
 import { TravelDestination } from "@/types/TravelDestination";
+import { Review } from "@/types/Review";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
@@ -10,9 +11,11 @@ import { Rating } from "react-simple-star-rating";
 const DestinationPage = ({ params }: any) => {
   const { destination } = params;
   const { user, loading } = useAuth(); // Bruk loading tilstanden
-
+  const [gatherData, setGatherData] = useState<boolean>(false);
   const [travelDestination, setTravelDestination] =
     useState<TravelDestination | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [description, setDescription] = useState<string>("");
   const router = useRouter();
 
   const fetchDestinations = async () => {
@@ -25,11 +28,21 @@ const DestinationPage = ({ params }: any) => {
       .filter((data) => data.id == destination);
     setTravelDestination(data[0]);
   };
+
+  const fetchReviews = async () => {
+    let reviewData = await getData<Review>("reviews");
+    setReviews(reviewData);
+    // let filteredReviews = reviewData.filter(
+    //   (review) => review.destinationId === destination
+    // );
+    // setReviews(filteredReviews);
+    // console.log(filteredReviews);
+  };
+
   // Rating
   const [rating, setRating] = useState(0);
   const handleRating = (rate: number) => {
     setRating(rate);
-    console.log(rate);
   };
 
   useEffect(() => {
@@ -38,14 +51,38 @@ const DestinationPage = ({ params }: any) => {
       router.push("/login");
     }
     fetchDestinations();
+    fetchReviews();
   }, []);
-
-  const test = 2; //Only for testing purposes, should be replaced with the rating from the database
 
   if (travelDestination == null) {
     return <p>Laster...</p>;
   }
-
+  // Håndterer innsending av skjema
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const newReview = {
+        name: "test", //legge til denne funksjonaliteten
+        description: description,
+        rating: rating,
+        destinationId: destination,
+      };
+      const docId = await postData<Review>("reviews", newReview);
+      setRating(0);
+      setDescription("");
+      setGatherData(true);
+      event.currentTarget.reset();
+    } catch (error) {
+      console.error("Error adding review: ", error);
+      setGatherData(false);
+    }
+    setRating(0);
+    setDescription("");
+  };
+  //Oppdaterer tilstanden basert på endringer i textarea-feltet
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(event.target.value);
+  };
   return (
     <div>
       <div className={styles.mainComponent}>
@@ -67,7 +104,7 @@ const DestinationPage = ({ params }: any) => {
           </p>
         </div>
         <div className={styles.commentSection}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <h2>Gi din anmeldelse</h2>
             <div className="App">
               <Rating onClick={handleRating} />
@@ -75,6 +112,9 @@ const DestinationPage = ({ params }: any) => {
             <textarea
               placeholder="Skriv en anmeldelse..."
               className={styles.commentInput}
+              name="description"
+              required
+              onChange={handleChange}
             />
             <button type="submit">Legg til anmeldelse</button>
           </form>
@@ -82,21 +122,20 @@ const DestinationPage = ({ params }: any) => {
       </div>
       <div className={styles.showComments}>
         <h2>Anmeldelser</h2>
-        <div className={styles.comment}>
-          <p>
-            <b>Navn:</b> Navn
-          </p>
-          <p>
-            <b>Anmeldelse:</b> Anmeldelse
-          </p>
-          <p>
-            <b>Rating:</b>
-            <Rating
-              initialValue={test} // Set the initial value from the database
-              readonly={true} // Make the rating read-only
-            />
-          </p>
-        </div>
+        {reviews.map((review) => (
+          <div className={styles.comment} key={review.id}>
+            <p>
+              <b>Navn:</b> {review.name}
+            </p>
+            <p>
+              <b>Anmeldelse:</b> {review.description}
+            </p>
+            <p>
+              <b>Rating:</b>
+              <Rating initialValue={review.rating} readonly={true} />
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -25,3 +25,6 @@
 .commentSection {
   margin-top: 40px;
 }
+.image {
+  max-width: 800px;
+}
