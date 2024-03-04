@@ -81,7 +81,7 @@ const UserPage = () => {
         user.uid,
         "destinasjon-1",
         review.rating,
-        review.review
+        review.review,
       );
     }
   };
