@@ -33,11 +33,11 @@ const DestinationPage = ({ params }: any) => {
   const fetchReviews = async () => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
-    // let filteredReviews = reviewData.filter(
-    //   (review) => review.destinationId === destination
-    // );
-    // setReviews(filteredReviews);
-    // console.log(filteredReviews);
+    let filteredReviews = reviewData.filter(
+      (review) => review.destinationId === destination
+    );
+    setReviews(filteredReviews);
+    console.log(filteredReviews);
   };
 
   // Rating
