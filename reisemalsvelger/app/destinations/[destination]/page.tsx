@@ -100,13 +100,7 @@ const DestinationPage = ({ params }: any) => {
             <b>Sted:</b> {travelDestination.location}
           </p>
           <p>
-            <b>Tags:</b>{" "}
-            {travelDestination.tags.map((tag) => (
-              <span key={tag}>{tag} </span>
-            ))}
-          </p>
-          <p>
-            <b>Beskrivelse:</b> {travelDestination.description}
+            <b></b> {travelDestination.description}
           </p>
         </div>
         <div className={styles.commentSection}>

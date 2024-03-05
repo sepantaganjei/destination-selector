@@ -1,21 +1,17 @@
-import styles from "./category.module.css";
+import styles from "./MostPopular.module.css";
 
 import TravelDestinationCard from "./TravelDestinationCard";
 import type { TravelDestination } from "@/types/TravelDestination";
-const allowedCategoryNames = ["Fjell", "Fjord", "Storby"];
+
 type CategoryProps = {
   name: string;
   travelDestinations: TravelDestination[];
 };
 
-const Category = ({ name, travelDestinations }: CategoryProps) => {
-  if (!allowedCategoryNames.includes(name)) {
-    console.error(`Invalid category name: ${name}`);
-    return null;
-  }
+const Recommended = ({ travelDestinations }: CategoryProps) => {
   return (
     <div className={styles.container}>
-      <p className={styles.title}>{name}</p>
+      <p className={styles.title}>Basert på dine preferanser</p>
       <div className={styles.travelDestinationList}>
         {travelDestinations.map((travelDestination, i) => (
           <TravelDestinationCard
@@ -28,4 +24,4 @@ const Category = ({ name, travelDestinations }: CategoryProps) => {
   );
 };
 
-export default Category;
+export default Recommended;

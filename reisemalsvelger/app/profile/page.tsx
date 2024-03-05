@@ -19,6 +19,8 @@ import {
 } from "../../app/firebaseAPI";
 import { Review } from "@/types/Review";
 import { Rating } from "react-simple-star-rating";
+import { setGlobal } from "next/dist/trace";
+import { Preference } from "@/types/Preference";
 
 interface ReviewDetails {
   rating: number;
@@ -32,9 +34,11 @@ const UserPage = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
   const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_UID || "";
+  const [gatherData, setGatherData] = useState<boolean>(false);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [destinations, setDestinations] = useState<string[]>([]);
-
+  const [tags, setTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const fetchReviews = async () => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
@@ -66,6 +70,7 @@ const UserPage = () => {
         console.log(user, loading);
         router.push("/login");
       }
+      fetchTags();
     }
   }, [user, loading, router]);
 
@@ -99,7 +104,17 @@ const UserPage = () => {
       fetchDestinations();
     }
   };
-
+  const fetchTags = async () => {
+    const fetchedTags = await getTags("h5tsqyxe5oB5BVM0f0St");
+    setTags(fetchedTags);
+    const existingPreference = await getData<Preference>("userPreference");
+    let filteredPreference = existingPreference.filter(
+      //Veldig dårlig kode :P
+      (preference) => preference.uid === user?.email,
+    );
+    let filteredPrefern = filteredPreference[0];
+    setSelectedTags(filteredPrefern?.tag || []);
+  };
   if (loading) {
     return <p>Laster...</p>;
   }
@@ -108,6 +123,40 @@ const UserPage = () => {
     await deleteData("reviews", id);
     setReviews((prev) => prev.filter((review) => review.name === user?.email));
     window.location.reload();
+  };
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) => {
+      if (prev.includes(tag)) {
+        return prev.filter((t) => t !== tag); // Fjerner taggen hvis den allerede er valgt
+      } else {
+        return [...prev, tag]; // Legger til taggen hvis den ikke er valgt
+      }
+    });
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("Submit");
+    try {
+      const newPreference = {
+        uid: user?.email || "",
+        tag: selectedTags,
+      };
+      const existingPreference = await getData<Preference>("userPreference");
+      let filteredPreference = existingPreference.filter(
+        (preference) => preference.uid === user?.email,
+      );
+      if (filteredPreference.length > 0) {
+        let filteredPrefern = filteredPreference[0];
+        await deleteData("userPreference", filteredPrefern.id ?? "");
+      }
+      await postData<Preference>("userPreference", newPreference);
+      setGatherData(true);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error adding/updating user preference: ", error);
+      setGatherData(false);
+    }
   };
 
   return (
@@ -121,6 +170,28 @@ const UserPage = () => {
               Administrer reisedestinasjoner
             </button>
           )}
+          <div>
+            <h3>Mine preferanser</h3>
+            <form onSubmit={handleSubmit}>
+              {tags.map((tag, index) => (
+                <span
+                  key={index}
+                  onClick={() => toggleTag(tag)}
+                  style={{
+                    cursor: "pointer",
+                    padding: "5px",
+                    border: selectedTags.includes(tag)
+                      ? "2px solid blue"
+                      : "1px solid grey",
+                    margin: "2px",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+              <button type="submit">Oppdater</button>
+            </form>
+          </div>
           <h3>Brukeranmeldelser:</h3>
           <div>
             {Object.keys(reviews).length > 0 ? (
