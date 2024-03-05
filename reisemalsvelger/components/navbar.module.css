@@ -9,7 +9,6 @@
   background-color: #333;
   padding: 10px;
   color: white;
-  z-index: 1000;
 }
 
 .logo-container {
@@ -32,6 +31,4 @@
   margin-right: 30px;
 }
 
-.content-container {
-  padding-top: 60px;
-}
+

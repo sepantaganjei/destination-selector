@@ -3,15 +3,17 @@ import React, { useState } from "react";
 
 const SearchBar = () => {
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Søk destinasjoner"
-        className="search-input"
-      />
-      <button type="button" className="search-button">
-        Søk
-      </button>
+    <div className={styles.searchbar}>
+      <div className={styles.inputContainer}>
+        <input
+          type="text"
+          placeholder="Søk destinasjoner"
+          className={styles.input}
+        />
+        <button type="button" className={styles.button}>
+          Søk
+        </button>
+      </div>
     </div>
   );
 };
