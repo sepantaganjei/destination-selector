@@ -35,7 +35,7 @@ const UserPage = () => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
     let filteredReviews = reviewData.filter(
-      (review) => review.name === user?.email
+      (review) => review.name === user?.email,
     );
     setReviews(filteredReviews);
     console.log(filteredReviews);
@@ -84,7 +84,7 @@ const UserPage = () => {
         user.uid,
         "destinasjon-1",
         review.rating,
-        review.review
+        review.review,
       );
     }
   };
