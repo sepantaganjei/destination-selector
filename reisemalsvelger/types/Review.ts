@@ -5,4 +5,5 @@ export interface Review extends BaseData {
   description: string;
   rating: number;
   destinationId: string;
+  destinationName: string;
 }

@@ -10,7 +10,11 @@ import {
   addDestinationToUser,
   getAllDestinationsFromUser,
   removeReviewFromUser,
+  getData,
+  deleteData,
 } from "../../app/firebaseAPI";
+import { Review } from "@/types/Review";
+import { Rating } from "react-simple-star-rating";
 
 interface ReviewDetails {
   rating: number;
@@ -24,18 +28,17 @@ const UserPage = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
   const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_UID || "";
-  const [reviews, setReviews] = useState<Reviews>({});
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [destinations, setDestinations] = useState<string[]>([]);
 
   const fetchReviews = async () => {
-    try {
-      if (user) {
-        const userReviews = await getAllReviewsFromUser(user.uid);
-        setReviews(userReviews as Reviews); // Type assertion her
-      }
-    } catch (error) {
-      console.error("Feil ved henting av reviews:", error);
-    }
+    let reviewData = await getData<Review>("reviews");
+    setReviews(reviewData);
+    let filteredReviews = reviewData.filter(
+      (review) => review.name === user?.email,
+    );
+    setReviews(filteredReviews);
+    console.log(filteredReviews);
   };
 
   const fetchDestinations = async () => {
@@ -97,6 +100,12 @@ const UserPage = () => {
     return <p>Laster...</p>;
   }
 
+  const handleDelete = async (id: string) => {
+    await deleteData("reviews", id);
+    setReviews((prev) => prev.filter((review) => review.name === user?.email));
+    window.location.reload();
+  };
+
   return (
     <div>
       {user ? (
@@ -113,14 +122,19 @@ const UserPage = () => {
             {Object.keys(reviews).length > 0 ? (
               Object.entries(reviews).map(([destinationId, reviewDetails]) => (
                 <div key={destinationId}>
-                  <h4>Destinasjon: {destinationId}</h4>
-                  <p>Rating: {reviewDetails.rating}</p>
-                  <p>Anmeldelse: {reviewDetails.review}</p>
+                  <h4>Destinasjon: {reviewDetails.destinationName}</h4>
+                  <p>
+                    Rating:{" "}
+                    <Rating
+                      initialValue={reviewDetails.rating}
+                      readonly={true}
+                    />
+                  </p>
+                  <p>Anmeldelse: {reviewDetails.description}</p>
                   <button
-                    onClick={async () => {
-                      await removeReviewFromUser(user.uid, destinationId);
-                      fetchReviews();
-                    }}
+                    onClick={() =>
+                      reviewDetails.id && handleDelete(reviewDetails.id)
+                    }
                   >
                     Fjern anmeldelse
                   </button>
