@@ -77,7 +77,7 @@ const AdminPage = () => {
       const newDestination = { ...destination, imageUrl, tags: selectedTags }; // Bruker selectedTags for tags
       const docId = await postData<TravelDestination>(
         "travelDestination",
-        newDestination,
+        newDestination
       );
       console.log(`Ny destinasjon lagt til med ID: ${docId}`);
       setDestination({
@@ -109,10 +109,10 @@ const AdminPage = () => {
   const handleDelete = async (id: string) => {
     await deleteData("travelDestination", id);
     await deleteImage(
-      destinations.find((destination) => destination.id === id)?.imageUrl || "",
+      destinations.find((destination) => destination.id === id)?.imageUrl || ""
     );
     setDestinations((prev) =>
-      prev.filter((destination) => destination.id !== id),
+      prev.filter((destination) => destination.id !== id)
     );
   };
 
