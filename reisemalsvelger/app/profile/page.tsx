@@ -12,6 +12,10 @@ import {
   removeReviewFromUser,
   getData,
   deleteData,
+  postData,
+  BaseData,
+  uploadImageAndGetURL,
+  getTags,
 } from "../../app/firebaseAPI";
 import { Review } from "@/types/Review";
 import { Rating } from "react-simple-star-rating";
@@ -157,7 +161,7 @@ const UserPage = () => {
             )}
           </div>
           <button onClick={handleLogout}>Logg ut</button>
-          <button onClick={handleAddDestination}>Legg til destinasjon</button>
+          <button onClick={handleAdmin}>Legg til destinasjon</button>
         </div>
       ) : (
         <p>Du er ikke logget inn.</p>
