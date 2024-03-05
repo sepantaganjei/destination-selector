@@ -34,7 +34,7 @@ const DestinationPage = ({ params }: any) => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
     let filteredReviews = reviewData.filter(
-      (review) => review.destinationId === destination,
+      (review) => review.destinationId === destination
     );
     setReviews(filteredReviews);
     console.log(filteredReviews);
@@ -70,6 +70,7 @@ const DestinationPage = ({ params }: any) => {
         description: description,
         rating: rating,
         destinationId: destination,
+        destinationName: travelDestination.name,
       };
       const docId = await postData<Review>("reviews", newReview);
       setRating(0); //Resetter ikke det bruker ser tho
@@ -112,7 +113,7 @@ const DestinationPage = ({ params }: any) => {
           <form onSubmit={handleSubmit}>
             <h2>Gi din anmeldelse</h2>
             <div className="App">
-              <Rating onClick={handleRating} />
+              <Rating onClick={handleRating} transition />
             </div>
             <textarea
               placeholder="Skriv en anmeldelse..."
