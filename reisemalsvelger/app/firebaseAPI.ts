@@ -43,7 +43,7 @@ export const registerUser = async (email: string, password: string) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     console.log("Registrert bruker:", userCredential.user);
 
@@ -69,7 +69,7 @@ export const loginUser = async (email: string, password: string) => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     console.log("Innlogget bruker:", userCredential.user);
   } catch (error) {
@@ -91,7 +91,7 @@ export const logoutUser = async () => {
 export const getUserProfile = async (uid: string): Promise<any> => {
   const querySnapshot = await getDocs(collection(db, "userProfiles"));
   const userProfileDoc = querySnapshot.docs.find(
-    (doc) => doc.data().uid === uid
+    (doc) => doc.data().uid === uid,
   );
   if (userProfileDoc) {
     return { id: userProfileDoc.id, ...userProfileDoc.data() };
@@ -104,7 +104,7 @@ export const getUserProfile = async (uid: string): Promise<any> => {
 // Legger til en reisedestinasjons-ID (markere reisedestinasjoner) i brukerdokumentet basert på uid
 export const addDestinationToUser = async (
   uid: string,
-  destinationId: string
+  destinationId: string,
 ) => {
   const userDocRef = doc(db, "userProfiles", uid);
   const userDoc = await getDoc(userDocRef);
@@ -125,7 +125,7 @@ export const addDestinationToUser = async (
 // Sletter en reisedestinasjons-ID fra brukerdokumentet basert på uid
 export const removeDestinationFromUser = async (
   uid: string,
-  destinationId: string
+  destinationId: string,
 ) => {
   const userDocRef = doc(db, "userProfiles", uid);
   const userDoc = await getDoc(userDocRef);
@@ -147,7 +147,7 @@ export const removeDestinationFromUser = async (
 
 // Funksjon for å hente alle reisedestinasjons-ID-er fra et brukerdokument basert på brukerens UID
 export const getAllDestinationsFromUser = async (
-  uid: string
+  uid: string,
 ): Promise<string[]> => {
   try {
     // Referanse til brukerdokumentet i Firestore
@@ -179,7 +179,7 @@ export const addReviewToUser = async (
   uid: string,
   destinationId: string,
   rating: number,
-  review: string
+  review: string,
 ) => {
   const userDocRef = doc(db, "userProfiles", uid);
   const userDoc = await getDoc(userDocRef);
@@ -209,7 +209,7 @@ export const addReviewToUser = async (
 // Sletter en review fra brukerdokumentet basert på uid
 export const removeReviewFromUser = async (
   uid: string,
-  destinationId: string
+  destinationId: string,
 ) => {
   const userDocRef = doc(db, "userProfiles", uid);
   const userDoc = await getDoc(userDocRef);
@@ -274,7 +274,7 @@ export const getTags = async (docId: string): Promise<string[]> => {
 
 // HENT/SEND/SLETT DATA FRA FIRESTORE: REISEDESTINASJONER
 export const getData = async <T extends BaseData>(
-  collectionId: string
+  collectionId: string,
 ): Promise<T[]> => {
   const querySnapshot = await getDocs(collection(db, collectionId));
   const data = querySnapshot.docs.map((doc) => ({
@@ -287,7 +287,7 @@ export const getData = async <T extends BaseData>(
 // Send ny reisedestinasjon til Firestore
 export const postData = async <T extends BaseData>(
   collectionId: string,
-  newData: T
+  newData: T,
 ): Promise<string> => {
   const docRef = await addDoc(collection(db, collectionId), newData);
   return docRef.id; // Returnerer ID-en til det nye dokumentet
@@ -295,14 +295,14 @@ export const postData = async <T extends BaseData>(
 
 export const deleteData = async (
   collectionId: string,
-  docId: string
+  docId: string,
 ): Promise<void> => {
   await deleteDoc(doc(db, collectionId, docId));
 };
 
 // Funksjon for å laste opp et bilde og returnere URL-en til bildet
 export const uploadImageAndGetURL = async (
-  uploadedFile: File
+  uploadedFile: File,
 ): Promise<string> => {
   const storageRef = ref(storage, `images/${uploadedFile.name}`);
   try {
@@ -343,7 +343,7 @@ export const getSearchResults = async (queryString: string) => {
   const q = query(
     destinationsRef,
     where("name", ">=", modQueryString),
-    where("name", "<=", modQueryString + "\uf8ff")
+    where("name", "<=", modQueryString + "\uf8ff"),
   );
   const querySnapshot = await getDocs(q);
 
