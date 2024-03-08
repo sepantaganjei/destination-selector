@@ -83,7 +83,7 @@ export default function Home() {
           key={tag}
           name={tag[0].toUpperCase() + tag.slice(1).toLowerCase()}
           travelDestinations={travelDestinations.filter((travelDestination) =>
-            travelDestination.tags.includes(tag)
+            travelDestination.tags.includes(tag),
           )}
         />
       ))}
