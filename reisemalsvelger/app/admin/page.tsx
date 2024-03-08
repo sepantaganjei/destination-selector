@@ -40,13 +40,6 @@ const AdminPage = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // Hvis man ikke er admin
-  useEffect(() => {
-    if (!loading) {
-      if (user?.uid !== ADMIN_UID || user?.uid == undefined) {
-        router.push("/");
-      }
-    }
-  }, [user, loading]);
 
   // Oppdaterer tilstanden basert på endringer i input-feltene
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,18 +95,23 @@ const AdminPage = () => {
   };
 
   const fetchDestinations = async () => {
-    const data = await getData<TravelDestination>("travelDestination");
-    setDestinations(data);
+    if (user && user.uid === ADMIN_UID) {
+      const data = await getData<TravelDestination>("travelDestination");
+      setDestinations(data);
+    }
   };
 
   const handleDelete = async (id: string) => {
-    await deleteData("travelDestination", id);
-    await deleteImage(
-      destinations.find((destination) => destination.id === id)?.imageUrl || "",
-    );
-    setDestinations((prev) =>
-      prev.filter((destination) => destination.id !== id),
-    );
+    if (user && user.uid === ADMIN_UID) {
+      await deleteData("travelDestination", id);
+      await deleteImage(
+        destinations.find((destination) => destination.id === id)?.imageUrl ||
+          "",
+      );
+      setDestinations((prev) =>
+        prev.filter((destination) => destination.id !== id),
+      );
+    }
   };
 
   // Hent reisemål fra databasen første gang siden lastes

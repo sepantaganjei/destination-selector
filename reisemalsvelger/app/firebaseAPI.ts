@@ -9,6 +9,8 @@ import {
   getDoc,
   query,
   where,
+  updateDoc,
+  setDoc,
 } from "firebase/firestore";
 import {
   ref,
@@ -45,17 +47,17 @@ export const registerUser = async (email: string, password: string) => {
     );
     console.log("Registrert bruker:", userCredential.user);
 
-    // Opprett et dokument i Firestore for den nye brukeren
+    // Definerer brukerprofilobjektet
     const userProfile = {
-      email: userCredential.user.email,
-      uid: userCredential.user.uid,
-      createdAt: new Date(),
-      reisedestinasjoner: [],
-      anmeldelser: [],
+      reisedestinasjoner: [], // Markere reisedestinasjoner som favoritter
+      reviews: {}, // Anmeldelser
+      tags: [], // For anbefaling
     };
-    await addDoc(collection(db, "userProfiles"), userProfile);
 
-    console.log("Brukerprofil opprettet i Firestore");
+    // Oppretter et dokument i Firestore med uid som dokument-ID
+    await setDoc(doc(db, "userProfiles", userCredential.user.uid), userProfile);
+
+    console.log("Brukerprofil opprettet i Firestore med uid som dokument-ID");
   } catch (error) {
     console.error("Registreringsfeil:", error);
   }
@@ -99,6 +101,161 @@ export const getUserProfile = async (uid: string): Promise<any> => {
   }
 };
 
+// Legger til en reisedestinasjons-ID (markere reisedestinasjoner) i brukerdokumentet basert på uid
+export const addDestinationToUser = async (
+  uid: string,
+  destinationId: string
+) => {
+  const userDocRef = doc(db, "userProfiles", uid);
+  const userDoc = await getDoc(userDocRef);
+
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    const destinations = new Set(userData.reisedestinasjoner || []);
+    destinations.add(destinationId); // Legger til ID, unngår duplikater
+
+    await updateDoc(userDocRef, {
+      reisedestinasjoner: Array.from(destinations),
+    });
+  } else {
+    console.log("Brukerdokumentet finnes ikke");
+  }
+};
+
+// Sletter en reisedestinasjons-ID fra brukerdokumentet basert på uid
+export const removeDestinationFromUser = async (
+  uid: string,
+  destinationId: string
+) => {
+  const userDocRef = doc(db, "userProfiles", uid);
+  const userDoc = await getDoc(userDocRef);
+
+  if (userDoc.exists()) {
+    let destinations = userDoc.data().reisedestinasjoner || [];
+    const index = destinations.indexOf(destinationId);
+
+    if (index > -1) {
+      destinations.splice(index, 1);
+      await updateDoc(userDocRef, {
+        reisedestinasjoner: destinations,
+      });
+    }
+  } else {
+    console.log("Brukerdokumentet finnes ikke");
+  }
+};
+
+// Funksjon for å hente alle reisedestinasjons-ID-er fra et brukerdokument basert på brukerens UID
+export const getAllDestinationsFromUser = async (
+  uid: string
+): Promise<string[]> => {
+  try {
+    // Referanse til brukerdokumentet i Firestore
+    const userDocRef = doc(db, "userProfiles", uid);
+    // Henter dokumentet
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      // Sjekker om 'reisedestinasjoner'-feltet eksisterer og returnerer det
+      if (userData.reisedestinasjoner) {
+        return userData.reisedestinasjoner;
+      } else {
+        console.log("Ingen reisedestinasjoner funnet for brukeren.");
+        return [];
+      }
+    } else {
+      console.log("Brukerdokumentet finnes ikke.");
+      return [];
+    }
+  } catch (error) {
+    console.error("Feil under henting av reisedestinasjoner:", error);
+    throw error; // Kaster feilen videre for eventuell håndtering utenfor funksjonen
+  }
+};
+
+// Legger til en review i brukerdokumentet
+export const addReviewToUser = async (
+  uid: string,
+  destinationId: string,
+  rating: number,
+  review: string
+) => {
+  const userDocRef = doc(db, "userProfiles", uid);
+  const userDoc = await getDoc(userDocRef);
+
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    // Sjekker om det allerede finnes en review for denne reisedestinasjonen
+    if (!userData.reviews[destinationId]) {
+      // Oppdaterer reviews-objektet med den nye reviewen
+      const newReviews = {
+        ...userData.reviews,
+        [destinationId]: {
+          rating,
+          review,
+        },
+      };
+
+      await updateDoc(userDocRef, {
+        reviews: newReviews,
+      });
+    }
+  } else {
+    console.log("Brukerdokumentet finnes ikke");
+  }
+};
+
+// Sletter en review fra brukerdokumentet basert på uid
+export const removeReviewFromUser = async (
+  uid: string,
+  destinationId: string
+) => {
+  const userDocRef = doc(db, "userProfiles", uid);
+  const userDoc = await getDoc(userDocRef);
+
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    if (userData.reviews && userData.reviews[destinationId]) {
+      // Fjerner reviewen for den spesifikke reisedestinasjonen
+      const { [destinationId]: removed, ...remainingReviews } =
+        userData.reviews;
+      await updateDoc(userDocRef, {
+        reviews: remainingReviews,
+      });
+    }
+  } else {
+    console.log("Brukerdokumentet finnes ikke");
+  }
+};
+
+// Henter alle reviews fra brukerdokumentet basert på uid
+export const getAllReviewsFromUser = async (uid: string) => {
+  try {
+    // Referanse til brukerdokumentet i Firestore
+    const userDocRef = doc(db, "userProfiles", uid);
+    // Henter dokumentet
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      // Sjekker om 'reviews'-feltet eksisterer og returnerer det
+      if (userData.reviews) {
+        return userData.reviews;
+      } else {
+        console.log("Ingen reviews funnet for brukeren.");
+        return {};
+      }
+    } else {
+      console.log("Brukerdokumentet finnes ikke.");
+      return {};
+    }
+  } catch (error) {
+    console.error("Feil under henting av reviews:", error);
+    throw error; // Kaster feilen videre for eventuell håndtering utenfor funksjonen
+  }
+};
+
 // HENT DATA FRA FIRESTORE: TAGS
 export const getTags = async (docId: string): Promise<string[]> => {
   const docRef = doc(db, "tags", docId); // Bytt ut "dinKolleksjon" med navnet på din kolleksjon
@@ -127,6 +284,7 @@ export const getData = async <T extends BaseData>(
   return data;
 };
 
+// Send ny reisedestinasjon til Firestore
 export const postData = async <T extends BaseData>(
   collectionId: string,
   newData: T

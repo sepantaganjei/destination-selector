@@ -1,0 +1,16 @@
+.container {
+  margin: 1rem 0;
+}
+
+.title {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.travelDestinationList {
+  display: flex;
+  gap: 15px;
+  flex-wrap: nowrap;
+  overflow: auto;
+  padding: 15px 0;
+}
