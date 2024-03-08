@@ -19,6 +19,10 @@
   width: 350px;
 }
 
+.input:focus {
+  outline: none;
+}
+
 .button {
   padding: 0.5rem;
   margin: 0.5rem;

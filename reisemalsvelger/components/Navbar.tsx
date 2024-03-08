@@ -1,6 +1,9 @@
+"use client";
+
 import styles from "./navbar.module.css";
 import { FaUserAlt } from "react-icons/fa";
 import Link from "next/link";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   return (
@@ -16,12 +19,16 @@ const Navbar = () => {
         </div>
       </Link>
 
-      <div className={styles["login-button-container"]}>
-        <Link href="/profile">
-          <button title="Login">
-            <FaUserAlt />
-          </button>
-        </Link>
+      <div className={styles["right-side"]}>
+        <SearchBar />
+
+        <div>
+          <Link href="/profile">
+            <button title="Login" className={styles["login-button"]}>
+              <FaUserAlt />
+            </button>
+          </Link>
+        </div>
       </div>
     </nav>
   );

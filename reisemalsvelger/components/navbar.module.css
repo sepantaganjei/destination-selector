@@ -27,8 +27,14 @@
   margin: 0;
 }
 
-.login-button-container {
+.right-side {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: fit-content;
   margin-right: 30px;
 }
 
-
+.login-button:hover {
+  cursor: pointer;
+}

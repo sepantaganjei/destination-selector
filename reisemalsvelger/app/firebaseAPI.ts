@@ -7,6 +7,8 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import {
   ref,
@@ -39,7 +41,7 @@ export const registerUser = async (email: string, password: string) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     console.log("Registrert bruker:", userCredential.user);
 
@@ -65,7 +67,7 @@ export const loginUser = async (email: string, password: string) => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     console.log("Innlogget bruker:", userCredential.user);
   } catch (error) {
@@ -86,7 +88,9 @@ export const logoutUser = async () => {
 // Hent bruker-dokument fra Firestore
 export const getUserProfile = async (uid: string): Promise<any> => {
   const querySnapshot = await getDocs(collection(db, "userProfiles"));
-  const userProfileDoc = querySnapshot.docs.find(doc => doc.data().uid === uid);
+  const userProfileDoc = querySnapshot.docs.find(
+    (doc) => doc.data().uid === uid
+  );
   if (userProfileDoc) {
     return { id: userProfileDoc.id, ...userProfileDoc.data() };
   } else {
@@ -113,7 +117,7 @@ export const getTags = async (docId: string): Promise<string[]> => {
 
 // HENT/SEND/SLETT DATA FRA FIRESTORE: REISEDESTINASJONER
 export const getData = async <T extends BaseData>(
-  collectionId: string,
+  collectionId: string
 ): Promise<T[]> => {
   const querySnapshot = await getDocs(collection(db, collectionId));
   const data = querySnapshot.docs.map((doc) => ({
@@ -125,7 +129,7 @@ export const getData = async <T extends BaseData>(
 
 export const postData = async <T extends BaseData>(
   collectionId: string,
-  newData: T,
+  newData: T
 ): Promise<string> => {
   const docRef = await addDoc(collection(db, collectionId), newData);
   return docRef.id; // Returnerer ID-en til det nye dokumentet
@@ -133,14 +137,14 @@ export const postData = async <T extends BaseData>(
 
 export const deleteData = async (
   collectionId: string,
-  docId: string,
+  docId: string
 ): Promise<void> => {
   await deleteDoc(doc(db, collectionId, docId));
 };
 
 // Funksjon for å laste opp et bilde og returnere URL-en til bildet
 export const uploadImageAndGetURL = async (
-  uploadedFile: File,
+  uploadedFile: File
 ): Promise<string> => {
   const storageRef = ref(storage, `images/${uploadedFile.name}`);
   try {
@@ -170,4 +174,25 @@ export const deleteImage = async (imageUrl: string) => {
 
   // Image is not used by any document, so delete it from storage
   await deleteObject(imageRef);
+};
+
+export const getSearchResults = async (queryString: string) => {
+  const modQueryString =
+    queryString.charAt(0).toUpperCase() + queryString.slice(1);
+
+  const destinationsRef = collection(db, "travelDestination");
+
+  const q = query(
+    destinationsRef,
+    where("name", ">=", modQueryString),
+    where("name", "<=", modQueryString + "\uf8ff")
+  );
+  const querySnapshot = await getDocs(q);
+
+  const searchResults = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return searchResults;
 };
