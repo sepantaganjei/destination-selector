@@ -9,27 +9,30 @@
 
 .header {
   font-size: 30px;
-  text-align: left;
+  flex: 1;
 }
 
 .form {
   display: flex;
   flex-wrap: wrap;
-  text-align: right;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
+
 .input {
   margin-left: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 .button {
   margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  background-color: lightblue;
-  border-color: white;
-  box-shadow: none;
+  cursor: pointer;
+}
+
+.button:focus {
+  outline: none;
 }
 
 .pulldown {
