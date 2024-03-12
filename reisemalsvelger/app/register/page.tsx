@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { registerUser } from "../firebaseAPI";
 import { useRouter } from "next/navigation";
+import styles from './styles.module.css';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -21,34 +22,37 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <h2>Registrer ny bruker</h2>
-      <form onSubmit={handleRegister}>
-        <div>
-          <label>E-post</label>
+    <div className={styles.container}>
+      <h2 className={styles.heading}>Registrer ny bruker</h2>
+      <form onSubmit={handleRegister} className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>E-post</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Passord</label>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Passord</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className={styles.input}
           />
         </div>
-        {error && <p>{error}</p>}
-        <button type="submit">Registrer</button>
+        {error && <p className={styles.error}>{error}</p>}
+        <button type="submit" className={styles.button}>Registrer</button>
       </form>
-      <h3>Har du bruker?</h3>
-      <button onClick={() => router.push("/login")}>Logg inn her</button>
+      <h3 className={styles.subheading}>Har du bruker?</h3>
+      <button onClick={() => router.push("/login")} className={styles.linkButton}>Logg inn her</button>
     </div>
   );
+  
 };
 
 export default RegisterPage;
