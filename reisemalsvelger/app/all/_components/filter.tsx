@@ -4,6 +4,7 @@ import Link from "next/link";
 import { TravelDestination } from "@/types/TravelDestination";
 import { getData, getTags } from "@/app/firebaseAPI";
 import TravelDestinationCard from "@/components/TravelDestinationCard";
+import { Review } from "@/types/Review";
 
 type CategoryItemProps = {
   reisedestinasjon: TravelDestination;
@@ -22,6 +23,10 @@ const CategoryItem = ({ reisedestinasjon }: CategoryItemProps) => {
 };
 
 const Filtrer = () => {
+  const [averageRatings, setAverageRatings] = useState<{
+    [key: string]: number;
+  }>({});
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [travelDestinations, setTravelDestinations] = useState<
     TravelDestination[]
   >([]);
@@ -39,6 +44,10 @@ const Filtrer = () => {
     setTravelDestinations(data);
     setFilteredDestinations(data);
   };
+  const fetchReviews = async () => {
+    let reviewData = await getData<Review>("reviews");
+    setReviews(reviewData);
+  };
 
   const fetchTags = async () => {
     const fetchedTags = await getTags("h5tsqyxe5oB5BVM0f0St");
@@ -48,7 +57,32 @@ const Filtrer = () => {
   useEffect(() => {
     fetchTags();
     fetchDestinations();
+    fetchReviews();
   }, []);
+  useEffect(() => {
+    const calculateAverageRatings = () => {
+      const destinationRatings: { [key: string]: number[] } = {};
+      reviews.forEach((review) => {
+        if (destinationRatings[review.destinationId]) {
+          destinationRatings[review.destinationId].push(review.rating);
+        } else {
+          destinationRatings[review.destinationId] = [review.rating];
+        }
+      });
+
+      const updatedAverageRatings: { [key: string]: number } = {};
+      Object.keys(destinationRatings).forEach((destinationId) => {
+        const ratings = destinationRatings[destinationId];
+        const averageRating =
+          ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
+        updatedAverageRatings[destinationId] = averageRating;
+      });
+
+      setAverageRatings(updatedAverageRatings);
+    };
+
+    calculateAverageRatings();
+  }, [reviews]);
 
   // const [selectedCategory, setSelectedCategory] = useState("0");
   const [selectedTag, setSelectedTag] = useState("0");
@@ -68,7 +102,7 @@ const Filtrer = () => {
 
     setFilteredDestinations(filtered);
   };
-
+  console.log(averageRatings);
   return (
     <div>
       <div className={styles.container}>
@@ -92,7 +126,11 @@ const Filtrer = () => {
       </div>
       <div className={styles.categoryList}>
         {filteredDestinations.map((reisedestinasjon, i) => (
-          <TravelDestinationCard key={i} travelDestination={reisedestinasjon} />
+          <TravelDestinationCard
+            key={i}
+            travelDestination={reisedestinasjon}
+            rating={averageRatings[reisedestinasjon.id] || 0}
+          />
         ))}
       </div>
     </div>
