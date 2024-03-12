@@ -50,8 +50,7 @@ export const registerUser = async (email: string, password: string) => {
     // Definerer brukerprofilobjektet
     const userProfile = {
       reisedestinasjoner: [], // Markere reisedestinasjoner som favoritter
-      reviews: {}, // Anmeldelser
-      tags: [], // For anbefaling
+      theme: "light", 
     };
 
     // Oppretter et dokument i Firestore med uid som dokument-ID
