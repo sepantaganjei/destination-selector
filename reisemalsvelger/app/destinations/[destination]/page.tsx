@@ -8,8 +8,11 @@ import { useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
 import { Rating } from "react-simple-star-rating";
 import { BsPinAngle, BsPinAngleFill } from "react-icons/bs";
-import { addDestinationToUser, removeDestinationFromUser, getAllDestinationsFromUser } from "@/app/firebaseAPI"; // Anta denne importstien
-
+import {
+  addDestinationToUser,
+  removeDestinationFromUser,
+  getAllDestinationsFromUser,
+} from "@/app/firebaseAPI"; // Anta denne importstien
 
 const DestinationPage = ({ params }: any) => {
   const { destination } = params;
@@ -33,7 +36,6 @@ const DestinationPage = ({ params }: any) => {
       .filter((data) => data.id == destination);
     setTravelDestination(data[0]);
   };
-
 
   const checkIfPinned = async () => {
     if (user) {
@@ -115,12 +117,10 @@ const DestinationPage = ({ params }: any) => {
     }
   };
 
-
   //Oppdaterer tilstanden basert på endringer i textarea-feltet
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
   };
-
 
   return (
     <div>

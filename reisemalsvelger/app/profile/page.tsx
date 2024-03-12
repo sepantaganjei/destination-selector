@@ -48,12 +48,15 @@ const UserPage = () => {
       if (user) {
         const destinationIds = await getAllDestinationsFromUser(user.uid); // Dette returnerer ID-ene
         console.log(destinationIds);
-        const allDestinations = await getData<TravelDestination>('travelDestination'); // Henter detaljer for alle destinasjoner med riktig type
-        
+        const allDestinations =
+          await getData<TravelDestination>("travelDestination"); // Henter detaljer for alle destinasjoner med riktig type
+
         // Filtrer ut destinasjonene brukeren har basert på ID
-        const userDestinations = allDestinations.filter(destination =>
-          destinationIds.includes(destination.id as string)
-        ).map(dest => dest.name); // Mapper til kun navnene
+        const userDestinations = allDestinations
+          .filter((destination) =>
+            destinationIds.includes(destination.id as string),
+          )
+          .map((dest) => dest.name); // Mapper til kun navnene
 
         console.log(userDestinations);
         setDestinations(userDestinations); // Oppdaterer state med navnene på destinasjonene
@@ -62,8 +65,6 @@ const UserPage = () => {
       console.error("Feil ved henting av destinasjoner:", error);
     }
   };
-  
-  
 
   useEffect(() => {
     if (!loading) {
@@ -107,7 +108,6 @@ const UserPage = () => {
       fetchDestinations();
     }
   };
-
 
   if (loading) {
     return <p>Laster...</p>;
@@ -163,7 +163,7 @@ const UserPage = () => {
               <ul>
                 {destinations.map((destination, index) => (
                   <li key={index}>
-                    <p>{destination}</p> 
+                    <p>{destination}</p>
                   </li>
                 ))}
               </ul>
