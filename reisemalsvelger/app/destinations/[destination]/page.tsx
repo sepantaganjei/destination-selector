@@ -94,14 +94,16 @@ const DestinationPage = ({ params }: any) => {
       <div className={styles.mainComponent}>
         <div className={styles.destination}>
           <h1>{travelDestination.name}</h1>
-          <img src={travelDestination?.imageUrl} className={styles.image} />
+          <div className={styles.main_descript}>
+            <img src={travelDestination?.imageUrl} className={styles.image} />
 
-          <p>
-            <b>Sted:</b> {travelDestination.location}
-          </p>
-          <p>
-            <b></b> {travelDestination.description}
-          </p>
+            <p className={styles.biggerText}>
+              <b>Sted:</b> {travelDestination.location}
+            </p>
+            <p className={styles.biggerText}>
+              <b></b> {travelDestination.description}
+            </p>
+          </div>
         </div>
       </div>
       <div className={styles.showComments}>
