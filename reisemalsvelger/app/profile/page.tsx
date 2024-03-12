@@ -14,6 +14,7 @@ import {
   deleteData,
 } from "../../app/firebaseAPI";
 import { Review } from "@/types/Review";
+import { Pinned } from "@/types/Pinned";
 import { Rating } from "react-simple-star-rating";
 
 interface ReviewDetails {
@@ -30,6 +31,7 @@ const UserPage = () => {
   const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_UID || "";
   const [reviews, setReviews] = useState<Review[]>([]);
   const [destinations, setDestinations] = useState<string[]>([]);
+  const [pinnedDestinations, setPinned] = useState<string[]>([]);
 
   const fetchReviews = async () => {
     let reviewData = await getData<Review>("reviews");
@@ -58,6 +60,7 @@ const UserPage = () => {
       const isNotLoggedIn = !user;
       fetchDestinations();
       fetchReviews();
+      fetchPinned();
       if (isNotLoggedIn) {
         console.log(user, loading);
         router.push("/login");
@@ -89,9 +92,23 @@ const UserPage = () => {
     }
   };
 
+  const fetchPinned = async () => {
+    try {
+      if (user) {
+        const pinnedItems = await getData<Pinned>("pinned");
+        const filteredPins = pinnedItems.filter(
+          (pinned) => pinned.name === user.email,
+        );
+        setPinned(filteredPins);
+      }
+    } catch (error) {
+      console.error("Feil ved henting av destinasjoner:", error);
+    }
+  };
+
   const handleAddDestination = async () => {
     if (user) {
-      await addDestinationToUser(user.uid, "NYER");
+      await addDestinationToUser(user.uid, "HEI");
       fetchDestinations();
     }
   };
@@ -145,17 +162,20 @@ const UserPage = () => {
             )}
           </div>
           <div>
-            <h2>Destinasjoner</h2>
-            {destinations.length > 0 ? (
+            <h3>Dine destinasjoner</h3>
+            {pinnedDestinations.length > 0 ? (
               <ul>
-                {destinations.map((destination, index) => (
-                  <li key={index}>{destination}</li>
+                {pinnedDestinations.map((destination, index) => (
+                  <li key={index}>
+                    <p>{destination.destinationName}</p>
+                  </li>
                 ))}
               </ul>
             ) : (
-              <p>Ingen destinasjoner funnet.</p>
+              <p>Ingen pinned destinasjoner funnet.</p>
             )}
           </div>
+
           <button onClick={handleLogout}>Logg ut</button>
           <button onClick={handleAddDestination}>Legg til destinasjon</button>
         </div>
