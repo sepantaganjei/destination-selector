@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import styles from "./page.module.css";
 import SearchBar from "@/components/SearchBar";
 import Navbar from "@/components/Navbar";
@@ -26,10 +26,12 @@ export default function Home() {
   }, [search]);
 
   return (
+    <Suspense>
     <div className={styles.results}>
       {searchResults.map((result) => (
         <TravelDestinationCard key={result.name} travelDestination={result} />
       ))}
     </div>
+    </Suspense>
   );
 }
