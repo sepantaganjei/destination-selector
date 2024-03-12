@@ -30,11 +30,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Auth state changed: ", user); // Legg til denne for å logge brukerobjektet
       setUser(user);
       setLoading(false);
-      getTheme(user!.uid).then((theme) => {
-        console.log("Hei");
-        console.log(theme);
-        setTheme(theme);
-      });
+      if (!loading && user) {
+        getTheme(user!.uid).then((theme) => {
+          setTheme(theme);
+        });
+      }
     });
 
     return () => unsubscribe();

@@ -23,7 +23,7 @@ const RegisterPage = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.heading}>Registrer ny bruker</h2>
+      <h1 className={styles.heading}>Registrer deg nå</h1>
       <form onSubmit={handleRegister} className={styles.form}>
         <div className={styles.inputGroup}>
           <label className={styles.label}>E-post</label>
@@ -55,7 +55,7 @@ const RegisterPage = () => {
         onClick={() => router.push("/login")}
         className={styles.linkButton}
       >
-        Logg inn her
+        Logg inn
       </button>
     </div>
   );
