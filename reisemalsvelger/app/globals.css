@@ -31,4 +31,14 @@ select {
   border: 1px solid var(--border-color);
   padding: 0.2rem;
   border-radius: 2px;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  cursor: pointer;
+  transform: scale(1.05); /* Gjør knappen 5% større */
+}
+
+button:active {
+  transform: scale(0.95); /* Gjør knappen 5% mindre */
 }
