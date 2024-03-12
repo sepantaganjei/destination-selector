@@ -6,17 +6,32 @@
   text-align: left;
   vertical-align: top;
   margin-top: 7px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  font-size: 16px;
+  line-height: 1.5;
 }
 .main {
   max-width: 100%;
   width: 1280px;
   margin: 60px auto 0 auto;
 }
+.h2 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: #333;
+}
 .body {
   margin: 0;
 }
+
 .mainComponent {
   display: flex;
+  border-radius: 7px;
 }
 .destination {
   margin-right: 5px;
@@ -28,9 +43,10 @@
   margin-bottom: 20px;
 }
 .image {
-  max-width: 800px;
-  min-width: 700px;
+  width: 100%;
   border-radius: 7px;
+  height: 600px;
+  object-fit: cover;
 }
 .comment {
   margin-top: 10px;
@@ -42,5 +58,13 @@
   width: 100%;
 }
 .destination {
-  width: 800px;
+  max-width: fit-content;
+}
+.biggerText {
+  font-size: 18px;
+  color: #333;
+}
+.main_descript {
+  background-color: #f5f5f5;
+  border-radius: 7px;
 }
