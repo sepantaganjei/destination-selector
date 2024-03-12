@@ -23,9 +23,9 @@ body {
   --border-color: #555555;
 }
 
-
-
-button, input, select {
+button,
+input,
+select {
   background-color: var(--secondary-color);
   color: var(--color-foreground);
   border: 1px solid var(--border-color);

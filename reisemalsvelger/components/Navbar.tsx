@@ -6,7 +6,7 @@ import SearchBar from "./SearchBar";
 import { useTheme } from "@/context/theme";
 
 const Navbar = () => {
-  const {toggleTheme} = useTheme();
+  const { toggleTheme } = useTheme();
 
   return (
     <nav className={styles["navbar-container"]}>
@@ -23,7 +23,7 @@ const Navbar = () => {
 
       <div className={styles["right-side"]}>
         <SearchBar />
-        <button onClick={() => toggleTheme()} >Bytt tema</button>
+        <button onClick={() => toggleTheme()}>Bytt tema</button>
 
         <div>
           <Link href="/profile">

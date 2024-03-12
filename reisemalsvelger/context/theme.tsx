@@ -1,19 +1,26 @@
 "use client";
-import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const ThemeContext = createContext({
-  theme: 'light',   toggleTheme: () => {},
+  theme: "light",
+  toggleTheme: () => {},
 });
 
-export const ThemeProvider = ({ children }: {children: ReactNode[]}) => {
-  const [theme, setTheme] = useState('light');
+export const ThemeProvider = ({ children }: { children: ReactNode[] }) => {
+  const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === 'light' ? 'dark' : 'light'));
+    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
   };
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute("data-theme", theme);
     console.log(theme);
   }, [theme]);
 
@@ -27,7 +34,7 @@ export const ThemeProvider = ({ children }: {children: ReactNode[]}) => {
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
 };
