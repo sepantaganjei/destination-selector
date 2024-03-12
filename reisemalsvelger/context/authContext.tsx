@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Auth state changed: ", user); // Legg til denne for å logge brukerobjektet
       setUser(user);
       setLoading(false);
-      if (!loading && user) {
+      if (user) {
         getTheme(user!.uid).then((theme) => {
           setTheme(theme);
         });
