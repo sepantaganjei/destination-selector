@@ -50,7 +50,7 @@ export const registerUser = async (email: string, password: string) => {
     // Definerer brukerprofilobjektet
     const userProfile = {
       reisedestinasjoner: [], // Markere reisedestinasjoner som favoritter
-      theme: "light", 
+      theme: "light",
     };
 
     // Oppretter et dokument i Firestore med uid som dokument-ID
@@ -82,7 +82,10 @@ export const getTheme = async (userId: string): Promise<string> => {
 };
 
 // Setter (oppdaterer) brukerens tema i Firestore
-export const setTheme = async (userId: string, theme: string): Promise<void> => {
+export const setTheme = async (
+  userId: string,
+  theme: string,
+): Promise<void> => {
   try {
     const docRef = doc(db, "userProfiles", userId);
 
@@ -96,7 +99,6 @@ export const setTheme = async (userId: string, theme: string): Promise<void> => 
     console.error("Feil under oppdatering av tema:", error);
   }
 };
-
 
 // Logg inn bruker
 export const loginUser = async (email: string, password: string) => {

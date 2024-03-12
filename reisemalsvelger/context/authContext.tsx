@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../app/firebaseConfig"; // Importer auth fra din Firebase-konfigurasjon
 import { onAuthStateChanged, User } from "firebase/auth";
+import { getTheme } from "@/app/firebaseAPI";
+import { useTheme } from "./theme";
 
 interface AuthContextType {
   user: User | null;
@@ -21,12 +23,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { setTheme } = useTheme();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("Auth state changed: ", user); // Legg til denne for å logge brukerobjektet
       setUser(user);
       setLoading(false);
+      getTheme(user!.uid).then((theme) => {
+        console.log("Hei");
+        console.log(theme);
+        setTheme(theme);
+      });
     });
 
     return () => unsubscribe();

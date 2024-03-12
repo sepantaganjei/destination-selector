@@ -21,14 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <Suspense>
-            <ThemeProvider>
+        <Suspense>
+          <ThemeProvider>
+            <AuthProvider>
               <Navbar />
               <main className="main">{children}</main>
-            </ThemeProvider>
-          </Suspense>
-        </AuthProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </Suspense>
       </body>
     </html>
   );

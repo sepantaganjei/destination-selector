@@ -4,9 +4,23 @@ import { FaUserAlt } from "react-icons/fa";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { useTheme } from "@/context/theme";
+import { useEffect } from "react";
+import { setTheme } from "@/app/firebaseAPI";
+import { useAuth } from "@/context/authContext";
 
 const Navbar = () => {
-  const { toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
+  const { user, loading } = useAuth();
+
+  const changeTheme = () => {
+    toggleTheme();
+  };
+
+  useEffect(() => {
+    if (!loading && user) {
+      setTheme(user!.uid, theme);
+    }
+  }, [theme]);
 
   return (
     <nav className={styles["navbar-container"]}>
@@ -23,7 +37,7 @@ const Navbar = () => {
 
       <div className={styles["right-side"]}>
         <SearchBar />
-        <button onClick={() => toggleTheme()}>Bytt tema</button>
+        <button onClick={() => changeTheme()}>Bytt tema</button>
 
         <div>
           <Link href="/profile">
