@@ -16,7 +16,6 @@ import { TravelDestination } from "@/types/TravelDestination";
 // Definerer interfacet for TravelDestination
 
 const AdminPage = () => {
-  const router = useRouter();
   const { user, loading } = useAuth();
   // admin mail: admin@fjellogfjord.com
   // password: admin123

@@ -1,11 +1,13 @@
 "use client";
-
 import styles from "./navbar.module.css";
 import { FaUserAlt } from "react-icons/fa";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
+import { useTheme } from "@/context/theme";
 
 const Navbar = () => {
+  const {toggleTheme} = useTheme();
+
   return (
     <nav className={styles["navbar-container"]}>
       <Link href="/" className={styles["logo-container"]}>
@@ -21,6 +23,7 @@ const Navbar = () => {
 
       <div className={styles["right-side"]}>
         <SearchBar />
+        <button onClick={() => toggleTheme()} >Bytt tema</button>
 
         <div>
           <Link href="/profile">
