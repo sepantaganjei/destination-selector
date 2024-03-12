@@ -67,7 +67,7 @@ const DestinationPage = ({ params }: any) => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
     let filteredReviews = reviewData.filter(
-      (review) => review.destinationId === destination
+      (review) => review.destinationId === destination,
     );
     setReviews(filteredReviews);
     findaverageRating(filteredReviews);
@@ -81,7 +81,7 @@ const DestinationPage = ({ params }: any) => {
   const findaverageRating = (reviewsData: Review[]) => {
     const totalRating = reviewsData.reduce(
       (acc, review) => acc + review.rating,
-      0
+      0,
     );
     setAverageRating(totalRating / reviewsData.length);
   };

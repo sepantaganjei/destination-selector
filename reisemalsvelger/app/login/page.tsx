@@ -59,7 +59,12 @@ const LoginPage = () => {
       </form>
 
       <h3 className={styles.subheading}>Har du ikke bruker?</h3>
-      <button onClick={() => router.push("/register")} className={styles.linkButton}>Registrer deg her</button>
+      <button
+        onClick={() => router.push("/register")}
+        className={styles.linkButton}
+      >
+        Registrer deg her
+      </button>
     </div>
   );
 };
