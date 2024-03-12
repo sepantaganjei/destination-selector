@@ -1,16 +1,18 @@
+"use client"
 import styles from "./searchbar.module.css";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { getSearchResults } from "../app/firebaseAPI";
+import { useRouter } from "next/navigation";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const router = useRouter();
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (query === "") return;
-    const searchResults = await getSearchResults(query);
-    console.log("Search results", searchResults);
+    router.push(`/search?search=${query}`);
   };
 
   return (
