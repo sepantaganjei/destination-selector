@@ -39,7 +39,7 @@ export default function Home() {
     console.log("Henter preferanser");
     let existingPreference = await getData<Preference>("userPreference");
     let yourPreference = existingPreference.find(
-      (preference) => preference.uid === (user?.email || ""),
+      (preference) => preference.uid === (user?.email || "")
     );
     setPreferences(yourPreference?.tag.map((tag) => tag.toLowerCase()) || []);
   };
@@ -58,7 +58,7 @@ export default function Home() {
 
   const filteredDestinations = travelDestinations.filter((destination) => {
     const destinationReviews = reviews.filter(
-      (review) => review.destinationId === destination.id,
+      (review) => review.destinationId === destination.id
     );
     const averageRating =
       destinationReviews.length > 0
@@ -72,9 +72,19 @@ export default function Home() {
     return destination.tags.some((lammeg) => preferences.includes(lammeg));
   });
 
+  const randomDestination = Array.from(
+    new Set(recommendedDestinations.concat(filteredDestinations))
+  )[
+    Math.floor(
+      Math.random() *
+        (recommendedDestinations.length > 0
+          ? recommendedDestinations.length
+          : filteredDestinations.length)
+    )
+  ];
   return (
     <>
-      <HomeBanner />
+      <HomeBanner travelDestination={randomDestination} name={""} />
       <SearchNavbar />
       <MostPopular travelDestinations={filteredDestinations} name={""} />
       {user && recommendedDestinations.length > 0 && (
@@ -87,7 +97,7 @@ export default function Home() {
           key={tag}
           name={tag[0].toUpperCase() + tag.slice(1).toLowerCase()}
           travelDestinations={travelDestinations.filter((travelDestination) =>
-            travelDestination.tags.includes(tag),
+            travelDestination.tags.includes(tag)
           )}
         />
       ))}
