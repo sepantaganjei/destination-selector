@@ -56,7 +56,7 @@ const DestinationPage = ({ params }: any) => {
         await addDestinationToUser(user.uid, destination);
         setNewIcon(true);
       }
-      checkIfPinned(); // Oppdater visuell indikasjon
+      //checkIfPinned(); // Oppdater visuell indikasjon
     } else {
       console.log("User is not logged in");
     }
@@ -85,6 +85,7 @@ const DestinationPage = ({ params }: any) => {
     }
     fetchDestinations();
     fetchReviews();
+    checkIfPinned();
   }, []);
 
   if (travelDestination == null) {
