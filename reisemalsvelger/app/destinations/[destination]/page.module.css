@@ -86,3 +86,7 @@
   width: 60px;
   height: 30px;
 }
+.averageRating {
+  font-size: 25px;
+  margin-left: 8px;
+}

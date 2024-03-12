@@ -14,10 +14,11 @@
 
 .name {
   color: white;
-  font-size: 30px;
+  font-size: 27px;
   font-weight: bold;
   z-index: 1;
   margin: 0 0 0.25rem 0.5rem;
+  margin-bottom: 8px;
 }
 
 .vignette {
@@ -42,4 +43,22 @@
   transform: scale(1.05);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   transition-duration: 500ms;
+}
+.star {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0.5rem;
+  color: white;
+}
+.star {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: white;
+  display: flex;
+  align-items: center;
 }

@@ -6,9 +6,10 @@ import type { TravelDestination } from "@/types/TravelDestination";
 type CategoryProps = {
   name: string;
   travelDestinations: TravelDestination[];
+  averageRatings: Record<string, number>;
 };
 
-const Recommended = ({ travelDestinations }: CategoryProps) => {
+const Recommended = ({ travelDestinations, averageRatings }: CategoryProps) => {
   return (
     <div className={styles.container}>
       <p className={styles.title}>Basert på dine preferanser</p>
@@ -17,6 +18,7 @@ const Recommended = ({ travelDestinations }: CategoryProps) => {
           <TravelDestinationCard
             key={i}
             travelDestination={travelDestination}
+            rating={averageRatings[travelDestination.id] || 0}
           />
         ))}
       </div>

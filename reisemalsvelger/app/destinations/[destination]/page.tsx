@@ -27,6 +27,7 @@ const DestinationPage = ({ params }: any) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const router = useRouter();
   const textfieldref = useRef<HTMLTextAreaElement>(null);
+  const [averageRating, setAverageRating] = useState<number>(0);
 
   const fetchDestinations = async () => {
     let data = await getData<TravelDestination>("travelDestination");
@@ -66,10 +67,10 @@ const DestinationPage = ({ params }: any) => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
     let filteredReviews = reviewData.filter(
-      (review) => review.destinationId === destination,
+      (review) => review.destinationId === destination
     );
     setReviews(filteredReviews);
-    console.log(filteredReviews);
+    findaverageRating(filteredReviews);
   };
 
   // Rating
@@ -77,7 +78,13 @@ const DestinationPage = ({ params }: any) => {
   const handleRating = (rate: number) => {
     setRating(rate);
   };
-
+  const findaverageRating = (reviewsData: Review[]) => {
+    const totalRating = reviewsData.reduce(
+      (acc, review) => acc + review.rating,
+      0
+    );
+    setAverageRating(totalRating / reviewsData.length);
+  };
   useEffect(() => {
     if (!loading && !user) {
       // Sjekk om ikke laster og ingen bruker
@@ -122,6 +129,7 @@ const DestinationPage = ({ params }: any) => {
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
   };
+
   return (
     <div>
       <div className={styles.mainComponent}>
@@ -145,6 +153,15 @@ const DestinationPage = ({ params }: any) => {
             <p className={styles.biggerText}>
               <b></b> {travelDestination.description}
             </p>
+          </div>
+          <h2>Gjennomsnittlig rating</h2>
+          <div className={styles.averageRating}>
+            <Rating
+              initialValue={averageRating}
+              allowFraction={true}
+              readonly={true}
+            />
+            {averageRating.toFixed(1)}
           </div>
         </div>
       </div>

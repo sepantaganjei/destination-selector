@@ -6,9 +6,14 @@ const allowedCategoryNames = ["Fjell", "Fjord", "Storby"];
 type CategoryProps = {
   name: string;
   travelDestinations: TravelDestination[];
+  averageRatings: Record<string, number>;
 };
 
-const Category = ({ name, travelDestinations }: CategoryProps) => {
+const Category = ({
+  name,
+  travelDestinations,
+  averageRatings,
+}: CategoryProps) => {
   if (!allowedCategoryNames.includes(name)) {
     console.error(`Invalid category name: ${name}`);
     return null;
@@ -21,6 +26,7 @@ const Category = ({ name, travelDestinations }: CategoryProps) => {
           <TravelDestinationCard
             key={i}
             travelDestination={travelDestination}
+            rating={averageRatings[travelDestination.id] || 0}
           />
         ))}
       </div>

@@ -20,13 +20,17 @@ export default function Home() {
   >([]);
   const [tags, setTags] = useState<string[]>([]);
   const [preferences, setPreferences] = useState<string[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [averageRatings, setAverageRatings] = useState<{
+    [key: string]: number;
+  }>({});
+  const { user } = useAuth();
 
   const fetchTags = async () => {
     const fetchedTags = await getTags("h5tsqyxe5oB5BVM0f0St");
     setTags(fetchedTags.map((tag) => tag.toLowerCase()));
   };
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const { user } = useAuth();
+
   const fetchDestinations = async () => {
     let data = await getData<TravelDestination>("travelDestination");
     data = data.map((travelDestination) => ({
@@ -35,13 +39,19 @@ export default function Home() {
     }));
     setTravelDestinations(data);
   };
+
   const fetchPreferences = async () => {
     console.log("Henter preferanser");
     let existingPreference = await getData<Preference>("userPreference");
     let yourPreference = existingPreference.find(
-      (preference) => preference.uid === (user?.email || ""),
+      (preference) => preference.uid === (user?.email || "")
     );
     setPreferences(yourPreference?.tag.map((tag) => tag.toLowerCase()) || []);
+  };
+
+  const fetchReviews = async () => {
+    let reviewData = await getData<Review>("reviews");
+    setReviews(reviewData);
   };
 
   useEffect(() => {
@@ -51,20 +61,42 @@ export default function Home() {
     fetchPreferences();
   }, []);
 
-  const fetchReviews = async () => {
-    let reviewData = await getData<Review>("reviews");
-    setReviews(reviewData);
-  };
+  useEffect(() => {
+    const calculateAverageRatings = () => {
+      const destinationRatings: { [key: string]: number[] } = {};
+      reviews.forEach((review) => {
+        if (destinationRatings[review.destinationId]) {
+          destinationRatings[review.destinationId].push(review.rating);
+        } else {
+          destinationRatings[review.destinationId] = [review.rating];
+        }
+      });
+
+      const updatedAverageRatings: { [key: string]: number } = {};
+      Object.keys(destinationRatings).forEach((destinationId) => {
+        const ratings = destinationRatings[destinationId];
+        const averageRating =
+          ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
+        updatedAverageRatings[destinationId] = averageRating;
+      });
+
+      setAverageRatings(updatedAverageRatings);
+    };
+
+    calculateAverageRatings();
+  }, [reviews]);
 
   const filteredDestinations = travelDestinations.filter((destination) => {
     const destinationReviews = reviews.filter(
-      (review) => review.destinationId === destination.id,
+      (review) => review.destinationId === destination.id
     );
     const averageRating =
       destinationReviews.length > 0
         ? destinationReviews.reduce((sum, review) => sum + review.rating, 0) /
           destinationReviews.length
         : 0;
+    averageRatings[destination.name] || 0;
+
     return averageRating > 4;
   });
 
@@ -73,23 +105,32 @@ export default function Home() {
   });
 
   const randomDestination = Array.from(
-    new Set(recommendedDestinations.concat(filteredDestinations)),
+    new Set(recommendedDestinations.concat(filteredDestinations))
   )[
     Math.floor(
       Math.random() *
         (recommendedDestinations.length > 0
           ? recommendedDestinations.length
-          : filteredDestinations.length),
+          : filteredDestinations.length)
     )
   ];
+
   return (
     <>
       <HomeBanner travelDestination={randomDestination} name={""} />
       <SearchNavbar />
-      <MostPopular travelDestinations={filteredDestinations} name={""} />
+      <MostPopular
+        travelDestinations={filteredDestinations}
+        name={""}
+        averageRatings={averageRatings}
+      />
       {user && recommendedDestinations.length > 0 && (
         <>
-          <Recommended travelDestinations={recommendedDestinations} name={""} />
+          <Recommended
+            travelDestinations={recommendedDestinations}
+            name={""}
+            averageRatings={averageRatings}
+          />
         </>
       )}
       {tags.map((tag) => (
@@ -97,8 +138,9 @@ export default function Home() {
           key={tag}
           name={tag[0].toUpperCase() + tag.slice(1).toLowerCase()}
           travelDestinations={travelDestinations.filter((travelDestination) =>
-            travelDestination.tags.includes(tag),
+            travelDestination.tags.includes(tag)
           )}
+          averageRatings={averageRatings}
         />
       ))}
     </>
