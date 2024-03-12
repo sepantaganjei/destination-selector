@@ -10,9 +10,10 @@ import {
 const ThemeContext = createContext({
   theme: "light",
   toggleTheme: () => {},
+  setTheme: (theme: string) => {},
 });
 
-export const ThemeProvider = ({ children }: { children: ReactNode[] }) => {
+export const ThemeProvider = ({ children }: { children: any[] | any }) => {
   const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
@@ -25,7 +26,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode[] }) => {
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
