@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import styles from "./searchbar.module.css";
 import React, { use, useState } from "react";
 import { getSearchResults } from "../app/firebaseAPI";
