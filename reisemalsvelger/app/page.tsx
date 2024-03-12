@@ -36,8 +36,12 @@ export default function Home() {
     setTravelDestinations(data);
   };
   const fetchPreferences = async () => {
+    console.log("Henter preferanser");
     let existingPreference = await getData<Preference>("userPreference");
-    setPreferences(existingPreference[0].tag.map((tag) => tag.toLowerCase()));
+    let yourPreference = existingPreference.find(
+      (preference) => preference.uid === (user?.email || ""),
+    );
+    setPreferences(yourPreference?.tag.map((tag) => tag.toLowerCase()) || []);
   };
 
   useEffect(() => {
@@ -68,9 +72,19 @@ export default function Home() {
     return destination.tags.some((lammeg) => preferences.includes(lammeg));
   });
 
+  const randomDestination = Array.from(
+    new Set(recommendedDestinations.concat(filteredDestinations)),
+  )[
+    Math.floor(
+      Math.random() *
+        (recommendedDestinations.length > 0
+          ? recommendedDestinations.length
+          : filteredDestinations.length),
+    )
+  ];
   return (
     <>
-      <HomeBanner />
+      <HomeBanner travelDestination={randomDestination} name={""} />
       <SearchNavbar />
       <MostPopular travelDestinations={filteredDestinations} name={""} />
       {user && recommendedDestinations.length > 0 && (
