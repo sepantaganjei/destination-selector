@@ -1,5 +1,5 @@
 "use client";
-
+import styles from "./page.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/authContext";
@@ -46,7 +46,7 @@ const UserPage = () => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
     let filteredReviews = reviewData.filter(
-      (review) => review.name === user?.email,
+      (review) => review.name === user?.email
     );
     setReviews(filteredReviews);
     console.log(filteredReviews);
@@ -107,7 +107,7 @@ const UserPage = () => {
         user.uid,
         "destinasjon-1",
         review.rating,
-        review.review,
+        review.review
       );
     }
   };
@@ -124,7 +124,7 @@ const UserPage = () => {
     const existingPreference = await getData<Preference>("userPreference");
     let filteredPreference = existingPreference.filter(
       //Veldig dårlig kode :P
-      (preference) => preference.uid === user?.email,
+      (preference) => preference.uid === user?.email
     );
     let filteredPrefern = filteredPreference[0];
     setSelectedTags(filteredPrefern?.tag || []);
@@ -158,7 +158,7 @@ const UserPage = () => {
       };
       const existingPreference = await getData<Preference>("userPreference");
       let filteredPreference = existingPreference.filter(
-        (preference) => preference.uid === user?.email,
+        (preference) => preference.uid === user?.email
       );
       if (filteredPreference.length > 0) {
         let filteredPrefern = filteredPreference[0];
@@ -179,18 +179,23 @@ const UserPage = () => {
         <div>
           <h1>Brukerprofil</h1>
           <p>Velkommen, {user.email}</p>
-          {user?.uid === ADMIN_UID && (
-            <button onClick={handleAdmin}>
+          {user?.uid === ADMIN_UID ? (
+            <button onClick={handleAdmin} className={styles.adminbutton}>
               Administrer reisedestinasjoner
+            </button>
+          ) : (
+            <button onClick={handleAdmin} className={styles.adminbutton}>
+              Legg til destinasjoner
             </button>
           )}
           <div>
             <h3>Mine preferanser</h3>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={styles.form}>
               {tags.map((tag, index) => (
                 <span
                   key={index}
                   onClick={() => toggleTag(tag)}
+                  className={styles.tag}
                   style={{
                     cursor: "pointer",
                     padding: "5px",
@@ -203,14 +208,16 @@ const UserPage = () => {
                   {tag}
                 </span>
               ))}
-              <button type="submit">Oppdater</button>
+              <button className={styles.button} type="submit">
+                Oppdater
+              </button>
             </form>
           </div>
-          <h3>Brukeranmeldelser:</h3>
+          <h3>Mine anmeldelser:</h3>
           <div>
             {Object.keys(reviews).length > 0 ? (
               Object.entries(reviews).map(([destinationId, reviewDetails]) => (
-                <div key={destinationId}>
+                <div key={destinationId} className={styles.comment}>
                   <h4>Destinasjon: {reviewDetails.destinationName}</h4>
                   <p>
                     Rating:{" "}
@@ -221,6 +228,7 @@ const UserPage = () => {
                   </p>
                   <p>Anmeldelse: {reviewDetails.description}</p>
                   <button
+                    className={styles.deleteButton}
                     onClick={() =>
                       reviewDetails.id && handleDelete(reviewDetails.id)
                     }
@@ -234,7 +242,7 @@ const UserPage = () => {
             )}
           </div>
           <div>
-            <h2>Destinasjoner</h2>
+            <h3>Mine destinasjoner:</h3>
             {destinations.length > 0 ? (
               <ul>
                 {destinations.map((destination, index) => (
@@ -245,8 +253,9 @@ const UserPage = () => {
               <p>Ingen destinasjoner funnet.</p>
             )}
           </div>
-          <button onClick={handleLogout}>Logg ut</button>
-          <button onClick={handleAdmin}>Legg til destinasjon</button>
+          <button onClick={handleLogout} className={styles.logUt}>
+            Logg ut
+          </button>
         </div>
       ) : (
         <p>Du er ikke logget inn.</p>

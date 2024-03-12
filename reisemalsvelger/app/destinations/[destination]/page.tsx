@@ -66,7 +66,7 @@ const DestinationPage = ({ params }: any) => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
     let filteredReviews = reviewData.filter(
-      (review) => review.destinationId === destination,
+      (review) => review.destinationId === destination
     );
     setReviews(filteredReviews);
     console.log(filteredReviews);

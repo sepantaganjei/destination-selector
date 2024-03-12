@@ -60,10 +60,9 @@
 
 .biggerText {
   font-size: 18px;
-  color: #333;
 }
 .main_descript {
-  background-color: #f5f5f5;
+  background-color: var(--secondary-color);
   border-radius: 7px;
 }
 .mark {
