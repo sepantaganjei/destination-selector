@@ -27,11 +27,11 @@ export default function Home() {
 
   return (
     <Suspense>
-    <div className={styles.results}>
-      {searchResults.map((result) => (
-        <TravelDestinationCard key={result.name} travelDestination={result} />
-      ))}
-    </div>
+      <div className={styles.results}>
+        {searchResults.map((result) => (
+          <TravelDestinationCard key={result.name} travelDestination={result} />
+        ))}
+      </div>
     </Suspense>
   );
 }
