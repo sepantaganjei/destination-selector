@@ -14,8 +14,8 @@ import {
   deleteData,
 } from "../../app/firebaseAPI";
 import { Review } from "@/types/Review";
-import { Pinned } from "@/types/Pinned";
 import { Rating } from "react-simple-star-rating";
+import { TravelDestination } from "@/types/TravelDestination";
 
 interface ReviewDetails {
   rating: number;
@@ -46,21 +46,30 @@ const UserPage = () => {
   const fetchDestinations = async () => {
     try {
       if (user) {
-        const userDestinations = await getAllDestinationsFromUser(user.uid);
+        const destinationIds = await getAllDestinationsFromUser(user.uid); // Dette returnerer ID-ene
+        console.log(destinationIds);
+        const allDestinations = await getData<TravelDestination>('travelDestination'); // Henter detaljer for alle destinasjoner med riktig type
+        
+        // Filtrer ut destinasjonene brukeren har basert på ID
+        const userDestinations = allDestinations.filter(destination =>
+          destinationIds.includes(destination.id as string)
+        ).map(dest => dest.name); // Mapper til kun navnene
+
         console.log(userDestinations);
-        setDestinations(userDestinations);
+        setDestinations(userDestinations); // Oppdaterer state med navnene på destinasjonene
       }
     } catch (error) {
       console.error("Feil ved henting av destinasjoner:", error);
     }
   };
+  
+  
 
   useEffect(() => {
     if (!loading) {
       const isNotLoggedIn = !user;
       fetchDestinations();
       fetchReviews();
-      fetchPinned();
       if (isNotLoggedIn) {
         console.log(user, loading);
         router.push("/login");
@@ -92,26 +101,13 @@ const UserPage = () => {
     }
   };
 
-  const fetchPinned = async () => {
-    try {
-      if (user) {
-        const pinnedItems = await getData<Pinned>("pinned");
-        const filteredPins = pinnedItems.filter(
-          (pinned) => pinned.name === user.email,
-        );
-        setPinned(filteredPins);
-      }
-    } catch (error) {
-      console.error("Feil ved henting av destinasjoner:", error);
-    }
-  };
-
   const handleAddDestination = async () => {
     if (user) {
       await addDestinationToUser(user.uid, "HEI");
       fetchDestinations();
     }
   };
+
 
   if (loading) {
     return <p>Laster...</p>;
@@ -163,16 +159,16 @@ const UserPage = () => {
           </div>
           <div>
             <h3>Dine destinasjoner</h3>
-            {pinnedDestinations.length > 0 ? (
+            {destinations.length > 0 ? (
               <ul>
-                {pinnedDestinations.map((destination, index) => (
+                {destinations.map((destination, index) => (
                   <li key={index}>
-                    <p>{destination.destinationName}</p>
+                    <p>{destination}</p> 
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>Ingen pinned destinasjoner funnet.</p>
+              <p>Ingen destinasjoner funnet.</p>
             )}
           </div>
 

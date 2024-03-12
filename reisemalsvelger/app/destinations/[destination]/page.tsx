@@ -8,7 +8,8 @@ import { useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
 import { Rating } from "react-simple-star-rating";
 import { BsPinAngle, BsPinAngleFill } from "react-icons/bs";
-import { Pinned } from "@/types/Pinned";
+import { addDestinationToUser, removeDestinationFromUser, getAllDestinationsFromUser } from "@/app/firebaseAPI"; // Anta denne importstien
+
 
 const DestinationPage = ({ params }: any) => {
   const { destination } = params;
@@ -32,61 +33,28 @@ const DestinationPage = ({ params }: any) => {
       .filter((data) => data.id == destination);
     setTravelDestination(data[0]);
   };
+
+
   const checkIfPinned = async () => {
-    if (!user) {
-      setNewIcon(false);
-      return;
-    }
-
-    try {
-      const pinnedItems = await getData<Pinned>("pinned");
-      const pinnedDestinations = pinnedItems.map((pinned) => pinned.destinationId);
-      const destinationIds = [destination];
-
-      destinationIds.forEach(destId => {
-        if (pinnedDestinations.includes(destId)) {
-          setNewIcon(true);
-        } else {
-          setNewIcon(false);
-        }
-      });
-    } catch (error) {
-      console.log("Error checking if destination is pinned:", error);
+    if (user) {
+      const userDestinations = await getAllDestinationsFromUser(user.uid);
+      setNewIcon(userDestinations.includes(destination));
     }
   };
 
-  const Pinned = async () => {
-    if (!user) {
-      console.log("User is not logged in");
-      return;
-    }
-    
-    const pinnedItems = await getData<userProfiles>("reisedestinasjoner");
-    const isDestinationPinned = pinnedItems.some(
-      (pinned) => pinned.destinationId === destination,
-    );
-
-    try {
-      if (!isDestinationPinned) {
-        const newPinned: Pinned = {
-          name: user.email,
-          destinationId: destination,
-          destinationName: travelDestination.name,
-        };
-        const docId = await postData<Pinned>("pinned", newPinned);
-        setNewIcon(true);
+  const togglePinned = async () => {
+    if (user) {
+      const userDestinations = await getAllDestinationsFromUser(user.uid);
+      if (userDestinations.includes(destination)) {
+        await removeDestinationFromUser(user.uid, destination);
+        setNewIcon(false);
       } else {
-        const pinnedItemId = pinnedItems.find(
-          (pinned) => pinned.destinationId === destination,
-        )?.id;
-        if (pinnedItemId) {
-          await deleteData("pinned", pinnedItemId);
-          setNewIcon(false);
-        }
+        await addDestinationToUser(user.uid, destination);
+        setNewIcon(true);
       }
-      checkIfPinned(); 
-    } catch (error) {
-      console.log("Error pinning destination:", error);
+      checkIfPinned(); // Oppdater visuell indikasjon
+    } else {
+      console.log("User is not logged in");
     }
   };
 
@@ -146,17 +114,21 @@ const DestinationPage = ({ params }: any) => {
       setGatherData(false);
     }
   };
+
+
   //Oppdaterer tilstanden basert på endringer i textarea-feltet
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
   };
+
+
   return (
     <div>
       <div className={styles.mainComponent}>
         <div className={styles.destination}>
           <div className={styles.mark}>
             <h1>{travelDestination.name}</h1>
-            <button onClick={Pinned(user?.email)} className={styles.pin}>
+            <button onClick={togglePinned} className={styles.pin}>
               {showNewIcon ? (
                 <BsPinAngleFill className={styles.icon} />
               ) : (
