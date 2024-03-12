@@ -62,6 +62,42 @@ export const registerUser = async (email: string, password: string) => {
   }
 };
 
+// Henter brukerens tema fra Firestore
+export const getTheme = async (userId: string): Promise<string> => {
+  try {
+    const docRef = doc(db, "userProfiles", userId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Henter brukerens tema:", docSnap.data().theme);
+      return docSnap.data().theme; // Returnerer brukerens tema
+    } else {
+      console.log("Fant ingen brukerprofil.");
+      return "light"; // Returnerer standardtema hvis ingen profil finnes
+    }
+  } catch (error) {
+    console.error("Feil under henting av tema:", error);
+    return "light"; // Returnerer standardtema ved feil
+  }
+};
+
+// Setter (oppdaterer) brukerens tema i Firestore
+export const setTheme = async (userId: string, theme: string): Promise<void> => {
+  try {
+    const docRef = doc(db, "userProfiles", userId);
+
+    // Oppdaterer kun temaet i brukerprofilen
+    await updateDoc(docRef, {
+      theme: theme,
+    });
+
+    console.log("Brukerens tema oppdatert til:", theme);
+  } catch (error) {
+    console.error("Feil under oppdatering av tema:", error);
+  }
+};
+
+
 // Logg inn bruker
 export const loginUser = async (email: string, password: string) => {
   try {
