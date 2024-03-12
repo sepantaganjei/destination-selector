@@ -7,6 +7,12 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
 import { Rating } from "react-simple-star-rating";
+import { BsPinAngle, BsPinAngleFill } from "react-icons/bs";
+import {
+  addDestinationToUser,
+  removeDestinationFromUser,
+  getAllDestinationsFromUser,
+} from "@/app/firebaseAPI"; // Anta denne importstien
 
 const DestinationPage = ({ params }: any) => {
   const { destination } = params;
@@ -14,8 +20,11 @@ const DestinationPage = ({ params }: any) => {
   const [gatherData, setGatherData] = useState<boolean>(false);
   const [travelDestination, setTravelDestination] =
     useState<TravelDestination | null>(null);
+  const [showNewIcon, setNewIcon] = useState<boolean>(false);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [description, setDescription] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const router = useRouter();
   const textfieldref = useRef<HTMLTextAreaElement>(null);
 
@@ -28,6 +37,29 @@ const DestinationPage = ({ params }: any) => {
       }))
       .filter((data) => data.id == destination);
     setTravelDestination(data[0]);
+  };
+
+  const checkIfPinned = async () => {
+    if (user) {
+      const userDestinations = await getAllDestinationsFromUser(user.uid);
+      setNewIcon(userDestinations.includes(destination));
+    }
+  };
+
+  const togglePinned = async () => {
+    if (user) {
+      const userDestinations = await getAllDestinationsFromUser(user.uid);
+      if (userDestinations.includes(destination)) {
+        await removeDestinationFromUser(user.uid, destination);
+        setNewIcon(false);
+      } else {
+        await addDestinationToUser(user.uid, destination);
+        setNewIcon(true);
+      }
+      checkIfPinned(); // Oppdater visuell indikasjon
+    } else {
+      console.log("User is not logged in");
+    }
   };
 
   const fetchReviews = async () => {
@@ -93,7 +125,16 @@ const DestinationPage = ({ params }: any) => {
     <div>
       <div className={styles.mainComponent}>
         <div className={styles.destination}>
-          <h1>{travelDestination.name}</h1>
+          <div className={styles.mark}>
+            <h1>{travelDestination.name}</h1>
+            <button onClick={togglePinned} className={styles.pin}>
+              {showNewIcon ? (
+                <BsPinAngleFill className={styles.icon} />
+              ) : (
+                <BsPinAngle className={styles.icon} />
+              )}
+            </button>
+          </div>
           <div className={styles.main_descript}>
             <img src={travelDestination?.imageUrl} className={styles.image} />
 
