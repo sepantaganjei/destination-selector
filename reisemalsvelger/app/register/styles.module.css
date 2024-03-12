@@ -48,11 +48,13 @@
   transition: transform 0.2s;
 }
 
-.button:hover, .linkButton:hover {
+.button:hover,
+.linkButton:hover {
   cursor: pointer;
   transform: scale(1.05); /* Gjør knappen 5% større */
 }
 
-.button:active, .linkButton:active {
+.button:active,
+.linkButton:active {
   transform: scale(0.95); /* Gjør knappen 5% mindre */
 }

@@ -46,7 +46,7 @@ const UserPage = () => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
     let filteredReviews = reviewData.filter(
-      (review) => review.name === user?.email
+      (review) => review.name === user?.email,
     );
     setReviews(filteredReviews);
     console.log(filteredReviews);
@@ -107,7 +107,7 @@ const UserPage = () => {
         user.uid,
         "destinasjon-1",
         review.rating,
-        review.review
+        review.review,
       );
     }
   };
@@ -124,7 +124,7 @@ const UserPage = () => {
     const existingPreference = await getData<Preference>("userPreference");
     let filteredPreference = existingPreference.filter(
       //Veldig dårlig kode :P
-      (preference) => preference.uid === user?.email
+      (preference) => preference.uid === user?.email,
     );
     let filteredPrefern = filteredPreference[0];
     setSelectedTags(filteredPrefern?.tag || []);
@@ -158,7 +158,7 @@ const UserPage = () => {
       };
       const existingPreference = await getData<Preference>("userPreference");
       let filteredPreference = existingPreference.filter(
-        (preference) => preference.uid === user?.email
+        (preference) => preference.uid === user?.email,
       );
       if (filteredPreference.length > 0) {
         let filteredPrefern = filteredPreference[0];
