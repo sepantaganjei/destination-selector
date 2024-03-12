@@ -7,6 +7,8 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  query,
+  where,
   updateDoc,
   setDoc,
 } from "firebase/firestore";
@@ -330,4 +332,25 @@ export const deleteImage = async (imageUrl: string) => {
 
   // Image is not used by any document, so delete it from storage
   await deleteObject(imageRef);
+};
+
+export const getSearchResults = async (queryString: string) => {
+  const modQueryString =
+    queryString.charAt(0).toUpperCase() + queryString.slice(1);
+
+  const destinationsRef = collection(db, "travelDestination");
+
+  const q = query(
+    destinationsRef,
+    where("name", ">=", modQueryString),
+    where("name", "<=", modQueryString + "\uf8ff"),
+  );
+  const querySnapshot = await getDocs(q);
+
+  const searchResults = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return searchResults;
 };

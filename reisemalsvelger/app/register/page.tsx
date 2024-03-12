@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { registerUser } from "../firebaseAPI";
 import { useRouter } from "next/navigation";
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -46,13 +46,19 @@ const RegisterPage = () => {
           />
         </div>
         {error && <p className={styles.error}>{error}</p>}
-        <button type="submit" className={styles.button}>Registrer</button>
+        <button type="submit" className={styles.button}>
+          Registrer
+        </button>
       </form>
       <h3 className={styles.subheading}>Har du bruker?</h3>
-      <button onClick={() => router.push("/login")} className={styles.linkButton}>Logg inn her</button>
+      <button
+        onClick={() => router.push("/login")}
+        className={styles.linkButton}
+      >
+        Logg inn her
+      </button>
     </div>
   );
-  
 };
 
 export default RegisterPage;

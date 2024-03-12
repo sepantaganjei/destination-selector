@@ -1,0 +1,6 @@
+.results {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 115px;
+}
