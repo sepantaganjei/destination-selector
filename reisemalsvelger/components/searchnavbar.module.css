@@ -9,7 +9,6 @@
   border: none;
   outline: none;
   box-shadow: none;
-  color: black;
   padding-top: 20px;
 }
 
@@ -25,5 +24,5 @@
 }
 
 #destinationBtn a {
-  color: inherit;
+  color: var(--color-foreground);
 }

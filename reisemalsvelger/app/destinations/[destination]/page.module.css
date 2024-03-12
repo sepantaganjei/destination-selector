@@ -7,9 +7,9 @@
   vertical-align: top;
   margin-top: 7px;
   padding: 10px;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  background-color: #f5f5f5;
+  background-color: var(--secondary-color);
+  color: var(--color-foreground);
+  border: 1px solid var(--border-color);
   font-size: 16px;
   line-height: 1.5;
 }
@@ -52,9 +52,9 @@
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
-  background-color: #f5f5f5;
+  background-color: var(--secondary-color);
   width: 100%;
 }
 .destination {
