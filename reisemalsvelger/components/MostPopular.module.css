@@ -10,7 +10,7 @@
 .travelDestinationList {
   display: flex;
   gap: 15px;
+  padding: 20px;
   flex-wrap: nowrap;
   overflow: auto;
-  padding: 15px 0;
 }

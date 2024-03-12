@@ -103,23 +103,6 @@ const DestinationPage = ({ params }: any) => {
             <b></b> {travelDestination.description}
           </p>
         </div>
-        <div className={styles.commentSection}>
-          <form onSubmit={handleSubmit}>
-            <h2>Gi din anmeldelse</h2>
-            <div className="App">
-              <Rating onClick={handleRating} transition />
-            </div>
-            <textarea
-              placeholder="Skriv en anmeldelse..."
-              className={styles.commentInput}
-              name="description"
-              required
-              ref={textfieldref}
-              onChange={handleChange}
-            />
-            <button type="submit">Legg til anmeldelse</button>
-          </form>
-        </div>
       </div>
       <div className={styles.showComments}>
         <h2>Anmeldelser</h2>
@@ -141,6 +124,23 @@ const DestinationPage = ({ params }: any) => {
             </div>
           ))
         )}
+      </div>
+      <div className={styles.commentSection}>
+        <form onSubmit={handleSubmit}>
+          <h2>Gi din anmeldelse</h2>
+          <div className="App">
+            <Rating onClick={handleRating} transition />
+          </div>
+          <textarea
+            placeholder="Skriv en anmeldelse..."
+            className={styles.commentInput}
+            name="description"
+            required
+            ref={textfieldref}
+            onChange={handleChange}
+          />
+          <button type="submit">Legg til anmeldelse</button>
+        </form>
       </div>
     </div>
   );

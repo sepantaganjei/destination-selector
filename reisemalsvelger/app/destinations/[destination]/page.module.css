@@ -25,6 +25,7 @@
 .commentSection {
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
 .image {
   max-width: 800px;
