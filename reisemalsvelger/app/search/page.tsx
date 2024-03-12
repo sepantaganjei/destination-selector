@@ -29,7 +29,11 @@ export default function Home() {
     <Suspense>
       <div className={styles.results}>
         {searchResults.map((result) => (
-          <TravelDestinationCard key={result.name} travelDestination={result} />
+          <TravelDestinationCard
+            key={result.name}
+            travelDestination={result}
+            rating={0}
+          />
         ))}
       </div>
     </Suspense>
