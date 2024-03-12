@@ -21,6 +21,7 @@ import { Review } from "@/types/Review";
 import { Rating } from "react-simple-star-rating";
 import { setGlobal } from "next/dist/trace";
 import { Preference } from "@/types/Preference";
+import { TravelDestination } from "@/types/TravelDestination";
 
 interface ReviewDetails {
   rating: number;
@@ -37,8 +38,10 @@ const UserPage = () => {
   const [gatherData, setGatherData] = useState<boolean>(false);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [destinations, setDestinations] = useState<string[]>([]);
+  const [pinnedDestinations, setPinned] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   const fetchReviews = async () => {
     let reviewData = await getData<Review>("reviews");
     setReviews(reviewData);
@@ -52,9 +55,20 @@ const UserPage = () => {
   const fetchDestinations = async () => {
     try {
       if (user) {
-        const userDestinations = await getAllDestinationsFromUser(user.uid);
+        const destinationIds = await getAllDestinationsFromUser(user.uid); // Dette returnerer ID-ene
+        console.log(destinationIds);
+        const allDestinations =
+          await getData<TravelDestination>("travelDestination"); // Henter detaljer for alle destinasjoner med riktig type
+
+        // Filtrer ut destinasjonene brukeren har basert på ID
+        const userDestinations = allDestinations
+          .filter((destination) =>
+            destinationIds.includes(destination.id as string),
+          )
+          .map((dest) => dest.name); // Mapper til kun navnene
+
         console.log(userDestinations);
-        setDestinations(userDestinations);
+        setDestinations(userDestinations); // Oppdaterer state med navnene på destinasjonene
       }
     } catch (error) {
       console.error("Feil ved henting av destinasjoner:", error);
