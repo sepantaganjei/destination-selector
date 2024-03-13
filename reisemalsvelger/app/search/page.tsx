@@ -28,13 +28,17 @@ export default function Home() {
   return (
     <Suspense>
       <div className={styles.results}>
-        {searchResults.map((result) => (
-          <TravelDestinationCard
-            key={result.name}
-            travelDestination={result}
-            rating={0}
-          />
-        ))}
+        {searchResults.length === 0 ? (
+          <p>Ingen destinasjoner møter ditt søk</p>
+        ) : (
+          searchResults.map((result) => (
+            <TravelDestinationCard
+              key={result.name}
+              travelDestination={result}
+              rating={0}
+            />
+          ))
+        )}
       </div>
     </Suspense>
   );
