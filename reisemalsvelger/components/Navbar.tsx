@@ -7,6 +7,10 @@ import { useTheme } from "@/context/theme";
 import { useEffect } from "react";
 import { setTheme } from "@/app/firebaseAPI";
 import { useAuth } from "@/context/authContext";
+import { FaMoon } from "react-icons/fa6";
+import { IoIosMoon, IoMdPerson } from "react-icons/io";
+import { IoMoon, IoMoonOutline, IoPerson, IoPersonOutline, IoSunny } from "react-icons/io5";
+import { LuMountain } from "react-icons/lu";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -25,24 +29,26 @@ const Navbar = () => {
   return (
     <nav className={styles["navbar-container"]}>
       <Link href="/" className={styles["logo-container"]}>
-        <img
-          title="Image"
-          alt="logo"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0lahmL7dYeyPHJEwrOgsejj77EtDzUlcOSg&usqp=CAU"
-        />
+        <LuMountain size="30px" />
         <div className={styles["title-container"]}>
           <h1>Fjell og Fjord</h1>
         </div>
       </Link>
 
+      <SearchBar />
       <div className={styles["right-side"]}>
-        <SearchBar />
-        <button onClick={() => changeTheme()}>Bytt tema</button>
+        <button className={styles.iconButton} onClick={() => changeTheme()} >
+          {theme === "light" ? 
+            <IoMoon color="var(--color-foreground)" size="30px" />
+          : 
+            <IoSunny color="var(--color-foreground)" size="30px" />
+          }
+        </button>
 
         <div>
           <Link href="/profile">
-            <button title="Login" className={styles["login-button"]}>
-              <FaUserAlt />
+            <button className={styles.iconButton} >
+              <IoPerson color="var(--color-foreground)" size="30px" />
             </button>
           </Link>
         </div>

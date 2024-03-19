@@ -1,33 +1,37 @@
 "use client";
 import styles from "./searchbar.module.css";
-import React, { use, useState } from "react";
-import { getSearchResults } from "../app/firebaseAPI";
+import React, { KeyboardEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IoSearchOutline } from "react-icons/io5";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
   const router = useRouter();
 
-  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSearch = async () => {
     if (query === "") return;
     router.push(`/search?search=${query}`);
   };
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  }
+
   return (
-    <div className={styles.searchbar}>
-      <div className={styles.inputContainer}>
-        <form onSubmit={handleSearch}>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Søk destinasjoner"
-            className={styles.input}
-          />
-        </form>
+    <div className={styles.searchContainer}>
+      <div className={styles.iconContainer} onClick={handleSearch} >
+        <IoSearchOutline size="20px" color="var(--color-foreground)" />
       </div>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Søk destinasjoner"
+        className={styles.input}
+      />
     </div>
   );
 };

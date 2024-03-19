@@ -1,31 +1,28 @@
 .navbar-container {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  max-width: 100%;
+  width: 1280px;
   display: flex;
   justify-content: space-between;
+  background-color: var(--color-background);
   align-items: center;
-  background-color: #333;
-  padding: 1px;
-  color: white;
+  padding: 0.5rem 0;
   z-index: 100;
+  border-bottom: var(--border-color) 1px solid;
 }
+
 
 .logo-container {
   display: flex;
   align-items: center;
-  color: white;
+  color: var(--color-foreground);
   text-decoration: none;
+  gap: 0.3rem;
 }
 
-.logo-container img {
-  height: 30px;
-  margin-right: 10px;
-}
-.logo-container img:hover {
-  cursor: pointer;
-}
 .title-container h1 {
   margin: 0;
 }
@@ -34,9 +31,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: fit-content;
-  margin-right: 30px;
+  gap: 0.4rem;
 }
 .login-button-container button:hover {
   cursor: pointer;
+}
+
+.iconButton {
+  border: none;
+  background-color: var(--color-background);
 }
