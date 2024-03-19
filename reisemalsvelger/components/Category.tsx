@@ -26,7 +26,7 @@ const Category = ({
           <TravelDestinationCard
             key={i}
             travelDestination={travelDestination}
-            rating={averageRatings[travelDestination.id] || 0}
+            rating={averageRatings[travelDestination.id!] || 0}
           />
         ))}
       </div>
