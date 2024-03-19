@@ -125,7 +125,7 @@ const Filtrer = () => {
         </div>
       </div>
       <div className={styles.categoryList}>
-        {filteredDestinations.map((reisedestinasjon, i) => (
+        {filteredDestinations.filter(reisedestinasjon => reisedestinasjon.id !== undefined).map((reisedestinasjon, i) => (
           <TravelDestinationCard
             key={i}
             travelDestination={reisedestinasjon}
