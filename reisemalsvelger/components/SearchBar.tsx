@@ -14,14 +14,14 @@ const SearchBar = () => {
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSearch();
     }
-  }
+  };
 
   return (
     <div className={styles.searchContainer}>
-      <div className={styles.iconContainer} onClick={handleSearch} >
+      <div className={styles.iconContainer} onClick={handleSearch}>
         <IoSearchOutline size="20px" color="var(--color-foreground)" />
       </div>
       <input

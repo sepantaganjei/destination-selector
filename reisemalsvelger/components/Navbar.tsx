@@ -9,7 +9,13 @@ import { setTheme } from "@/app/firebaseAPI";
 import { useAuth } from "@/context/authContext";
 import { FaMoon } from "react-icons/fa6";
 import { IoIosMoon, IoMdPerson } from "react-icons/io";
-import { IoMoon, IoMoonOutline, IoPerson, IoPersonOutline, IoSunny } from "react-icons/io5";
+import {
+  IoMoon,
+  IoMoonOutline,
+  IoPerson,
+  IoPersonOutline,
+  IoSunny,
+} from "react-icons/io5";
 import { LuMountain } from "react-icons/lu";
 
 const Navbar = () => {
@@ -37,17 +43,17 @@ const Navbar = () => {
 
       <SearchBar />
       <div className={styles["right-side"]}>
-        <button className={styles.iconButton} onClick={() => changeTheme()} >
-          {theme === "light" ? 
+        <button className={styles.iconButton} onClick={() => changeTheme()}>
+          {theme === "light" ? (
             <IoMoon color="var(--color-foreground)" size="30px" />
-          : 
+          ) : (
             <IoSunny color="var(--color-foreground)" size="30px" />
-          }
+          )}
         </button>
 
         <div>
           <Link href="/profile">
-            <button className={styles.iconButton} >
+            <button className={styles.iconButton}>
               <IoPerson color="var(--color-foreground)" size="30px" />
             </button>
           </Link>

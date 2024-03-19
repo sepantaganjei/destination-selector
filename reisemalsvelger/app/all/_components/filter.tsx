@@ -129,7 +129,7 @@ const Filtrer = () => {
           <TravelDestinationCard
             key={i}
             travelDestination={reisedestinasjon}
-            rating={averageRatings[reisedestinasjon.id] || 0}
+            rating={averageRatings[reisedestinasjon.id!] || 0}
           />
         ))}
       </div>

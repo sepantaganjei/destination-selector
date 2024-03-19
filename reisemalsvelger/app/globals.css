@@ -13,7 +13,7 @@ body {
   --color-foreground: black;
   --color-background: white;
   --secondary-color: #f5f5f5;
-  --border-color: #E0E0E0;
+  --border-color: #e0e0e0;
 }
 
 [data-theme="dark"] {
