@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import styles from './styles.module.css';
+
 import {
   BaseData,
   postData,
@@ -27,6 +29,7 @@ const AdminPage = () => {
 
   const [gatherData, setGatherData] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState("");
   const [destinations, setDestinations] = useState<TravelDestination[]>([]);
   const [destination, setDestination] = useState<TravelDestination>({
     name: "",
@@ -117,7 +120,7 @@ const AdminPage = () => {
   useEffect(() => {
     fetchTags();
     fetchDestinations();
-  }, []);
+  }, [loading]);
 
   // Hent reisemål fra databasen etter at et nytt reisemål er lagt til
   useEffect(() => {
@@ -129,56 +132,89 @@ const AdminPage = () => {
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setSelectedFile(event.target.files[0]);
+      const file = event.target.files[0];
+      setSelectedFile(file);
+      setSelectedFileName(file.name); // Her henter vi filnavnet fra den valgte filen
+    } else {
+      setSelectedFileName(""); // Nullstill filnavnet hvis ingen fil er valgt
     }
   };
-
+  
   return (
     <>
+      <h1>Legg til reisedestinasjoner</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={destination.name}
-          onChange={handleChange}
-          placeholder="Navn på reisemål"
-          required
-        />
-        <input
-          type="text"
-          name="location"
-          value={destination.location}
-          onChange={handleChange}
-          placeholder="Sted"
-          required
-        />
-        <input
-          type="text"
-          name="description"
-          value={destination.description || ""}
-          onChange={handleChange}
-          placeholder="Beskrivelse (valgfritt)"
-        />
-        {tags.map((tag, index) => (
-          <span
-            key={index}
-            onClick={() => toggleTag(tag)}
-            style={{
-              cursor: "pointer",
-              padding: "5px",
-              border: selectedTags.includes(tag)
-                ? "2px solid blue"
-                : "1px solid grey",
-              margin: "2px",
-            }}
-          >
-            {tag}
-          </span>
-        ))}
-        <input type="file" onChange={handleImageChange} />
-        <button type="submit">Last opp reisemål</button>
+      <ol>
+        <li>
+          <input
+            type="text"
+            name="name"
+            value={destination.name}
+            className={styles.inputField}
+            onChange={handleChange}
+            placeholder="Navn på reisemål"
+            required
+          />
+        </li>
+        <li>
+          <input
+            type="text"
+            name="location"
+            value={destination.location}
+            className={styles.inputField}
+            onChange={handleChange}
+            placeholder="Sted"
+            required
+          />
+        </li>
+        <li>
+          <input
+            type="text"
+            name="description"
+            value={destination.description || ""}
+            className={styles.inputField}
+            onChange={handleChange}
+            placeholder="Beskrivelse (valgfritt)"
+          />
+        </li>
+        <li>
+          <p>Velg tags:</p>
+          <div className={styles.tagsContainer}>
+            <div className={styles.tagsBox}>
+              {tags.map((tag, index) => (
+                <span
+                key={index}
+                onClick={() => toggleTag(tag)}
+                className={styles.tag}
+                style={{
+                  cursor: "pointer",
+                  padding: "5px",
+                  border: selectedTags.includes(tag)
+                  ? "2px solid blue"
+                  : "1px solid grey",
+                  margin: "2px",
+                }}
+                >
+                {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </li>
+        <li>
+          <label htmlFor="fileUpload" className={styles.fileInputLabel}>Last opp bilde</label>
+          <input
+            type="file"
+            id="fileUpload"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+          {selectedFileName && <p className={styles.fileInfo}>Valgt bilde: {selectedFileName}</p>}
+        </li>
+          <button className={styles.submitButton} type="submit">Last opp reisemål</button>
+        </ol>
       </form>
-      <div>
+      <div className={styles.destinationContainer}>
         {destinations.map((dest) => (
           <div key={dest.id}>
             <img
@@ -193,13 +229,21 @@ const AdminPage = () => {
               TAGS:{" "}
               {dest.tags &&
                 dest.tags.map((tag, index) => (
-                  <span key={tag}>
+                  <span key={tag} className={styles.tag}
+                  style={{
+                    cursor: "pointer",
+                    padding: "5px",
+                    border: selectedTags.includes(tag)
+                      ? "2px solid blue"
+                      : "1px solid grey",
+                    margin: "2px",
+                  }}>
                     {tag}
-                    {index < dest.tags.length - 1 ? ", " : ""}
+                    {index < dest.tags.length - 1 ? "" : ""}
                   </span>
                 ))}
             </p>
-            <button onClick={() => dest.id && handleDelete(dest.id)}>
+            <button className={styles.deleteButton} onClick={() => dest.id && handleDelete(dest.id)}>
               Slett
             </button>
           </div>
