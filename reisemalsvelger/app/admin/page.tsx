@@ -15,6 +15,7 @@ import {
 import { useAuth } from "../../context/authContext";
 import { TravelDestination } from "@/types/TravelDestination";
 import Button from "@/components/Button";
+import Tag from "@/components/Tag";
 
 // Definerer interfacet for TravelDestination
 
@@ -45,7 +46,7 @@ const AdminPage = () => {
   // Hvis man ikke er admin
 
   // Oppdaterer tilstanden basert på endringer i input-feltene
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<any>) => {
     const { name, value } = event.target;
     setDestination((prevState) => ({
       ...prevState,
@@ -169,8 +170,7 @@ const AdminPage = () => {
           />
         </li>
         <li>
-          <input
-            type="text"
+          <textarea
             name="description"
             value={destination.description || ""}
             className={styles.inputField}
@@ -183,21 +183,13 @@ const AdminPage = () => {
           <div className={styles.tagsContainer}>
             <div className={styles.tagsBox}>
               {tags.map((tag, index) => (
-                <span
-                key={index}
-                onClick={() => toggleTag(tag)}
-                className={styles.tag}
-                style={{
-                  cursor: "pointer",
-                  padding: "5px",
-                  border: selectedTags.includes(tag)
-                  ? "2px solid blue"
-                  : "1px solid grey",
-                  margin: "2px",
-                }}
+                <Tag
+                  key={index}
+                  onClick={() => toggleTag(tag)}
+                  active={selectedTags.includes(tag)}
                 >
-                {tag}
-                </span>
+                  {tag}
+                </Tag>
               ))}
             </div>
           </div>
@@ -212,7 +204,7 @@ const AdminPage = () => {
           />
           {selectedFileName && <p className={styles.fileInfo}>Valgt bilde: {selectedFileName}</p>}
         </li>
-          <button className={styles.submitButton} type="submit">Last opp reisemål</button>
+          <Button submit important>Last opp reisemål</Button>
         </ol>
       </form>
       <div className={styles.destinationContainer}>
