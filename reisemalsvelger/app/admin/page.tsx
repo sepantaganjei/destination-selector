@@ -12,6 +12,7 @@ import {
 } from "../firebaseAPI";
 import { useAuth } from "../../context/authContext";
 import { TravelDestination } from "@/types/TravelDestination";
+import Button from "@/components/Button";
 
 // Definerer interfacet for TravelDestination
 
@@ -176,7 +177,7 @@ const AdminPage = () => {
           </span>
         ))}
         <input type="file" onChange={handleImageChange} />
-        <button type="submit">Last opp reisemål</button>
+        <Button important submit>Last opp reisemål</Button>
       </form>
       <div>
         {destinations.map((dest) => (

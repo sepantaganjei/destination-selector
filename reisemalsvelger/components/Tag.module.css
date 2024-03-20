@@ -1,0 +1,11 @@
+.tag {
+  cursor: pointer;
+  background-color: var(--secondary-color);
+  margin: 0 0.05rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 50px;
+}
+
+.active {
+  background-color: var(--border-color);
+}
