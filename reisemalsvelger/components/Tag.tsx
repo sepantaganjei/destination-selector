@@ -4,10 +4,10 @@ import styles from "./Tag.module.css";
 type Props = {
   children: ReactNode;
   onClick: () => void;
-  active?: boolean,
+  active?: boolean;
 };
 
-const Tag = ({children, onClick, active}: Props) => {
+const Tag = ({ children, onClick, active }: Props) => {
   return (
     <span
       onClick={onClick}

@@ -186,9 +186,7 @@ const UserPage = () => {
               Administrer reisedestinasjoner
             </Button>
           ) : (
-            <Button onClick={handleAdmin}>
-              Legg til destinasjoner
-            </Button>
+            <Button onClick={handleAdmin}>Legg til destinasjoner</Button>
           )}
           <div>
             <h3>Mine preferanser</h3>
