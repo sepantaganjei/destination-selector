@@ -2,6 +2,7 @@ import { TravelDestination } from "@/types/TravelDestination";
 import styles from "./homebanner.module.css";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Button from "./Button";
 
 type CategoryProps = {
   name: string;
@@ -23,7 +24,7 @@ const HomeBanner = ({ travelDestination }: CategoryProps) => {
         <p>Utforsk skjulte perler og populære destinasjoner fra nord til sør</p>
         {travelDestination && (
           <Link href={`/destinations/${travelDestination?.id}`}>
-            <button>Prøv lykken</button>
+            <Button important>Prøv lykken</Button>
           </Link>
         )}
       </div>
