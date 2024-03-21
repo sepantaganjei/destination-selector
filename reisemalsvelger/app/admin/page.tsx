@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 
 import {
   BaseData,
@@ -14,6 +14,8 @@ import {
 } from "../firebaseAPI";
 import { useAuth } from "../../context/authContext";
 import { TravelDestination } from "@/types/TravelDestination";
+import Button from "@/components/Button";
+import Tag from "@/components/Tag";
 
 // Definerer interfacet for TravelDestination
 
@@ -44,7 +46,7 @@ const AdminPage = () => {
   // Hvis man ikke er admin
 
   // Oppdaterer tilstanden basert på endringer i input-feltene
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<any>) => {
     const { name, value } = event.target;
     setDestination((prevState) => ({
       ...prevState,
@@ -139,79 +141,76 @@ const AdminPage = () => {
       setSelectedFileName(""); // Nullstill filnavnet hvis ingen fil er valgt
     }
   };
-  
+
   return (
     <>
       <h1>Legg til reisedestinasjoner</h1>
       <form onSubmit={handleSubmit}>
-      <ol>
-        <li>
-          <input
-            type="text"
-            name="name"
-            value={destination.name}
-            className={styles.inputField}
-            onChange={handleChange}
-            placeholder="Navn på reisemål"
-            required
-          />
-        </li>
-        <li>
-          <input
-            type="text"
-            name="location"
-            value={destination.location}
-            className={styles.inputField}
-            onChange={handleChange}
-            placeholder="Sted"
-            required
-          />
-        </li>
-        <li>
-          <input
-            type="text"
-            name="description"
-            value={destination.description || ""}
-            className={styles.inputField}
-            onChange={handleChange}
-            placeholder="Beskrivelse (valgfritt)"
-          />
-        </li>
-        <li>
-          <p>Velg tags:</p>
-          <div className={styles.tagsContainer}>
-            <div className={styles.tagsBox}>
-              {tags.map((tag, index) => (
-                <span
-                key={index}
-                onClick={() => toggleTag(tag)}
-                className={styles.tag}
-                style={{
-                  cursor: "pointer",
-                  padding: "5px",
-                  border: selectedTags.includes(tag)
-                  ? "2px solid blue"
-                  : "1px solid grey",
-                  margin: "2px",
-                }}
-                >
-                {tag}
-                </span>
-              ))}
+        <ol>
+          <li>
+            <input
+              type="text"
+              name="name"
+              value={destination.name}
+              className={styles.inputField}
+              onChange={handleChange}
+              placeholder="Navn på reisemål"
+              required
+            />
+          </li>
+          <li>
+            <input
+              type="text"
+              name="location"
+              value={destination.location}
+              className={styles.inputField}
+              onChange={handleChange}
+              placeholder="Sted"
+              required
+            />
+          </li>
+          <li>
+            <textarea
+              name="description"
+              value={destination.description || ""}
+              className={styles.inputField}
+              onChange={handleChange}
+              placeholder="Beskrivelse (valgfritt)"
+            />
+          </li>
+          <li>
+            <p>Velg tags:</p>
+            <div className={styles.tagsContainer}>
+              <div className={styles.tagsBox}>
+                {tags.map((tag, index) => (
+                  <Tag
+                    key={index}
+                    onClick={() => toggleTag(tag)}
+                    active={selectedTags.includes(tag)}
+                  >
+                    {tag}
+                  </Tag>
+                ))}
+              </div>
             </div>
-          </div>
-        </li>
-        <li>
-          <label htmlFor="fileUpload" className={styles.fileInputLabel}>Last opp bilde</label>
-          <input
-            type="file"
-            id="fileUpload"
-            onChange={handleImageChange}
-            style={{ display: 'none' }}
-          />
-          {selectedFileName && <p className={styles.fileInfo}>Valgt bilde: {selectedFileName}</p>}
-        </li>
-          <button className={styles.submitButton} type="submit">Last opp reisemål</button>
+          </li>
+          <li>
+            <label htmlFor="fileUpload" className={styles.fileInputLabel}>
+              Last opp bilde
+            </label>
+            <input
+              type="file"
+              id="fileUpload"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+            {selectedFileName && (
+              <p className={styles.fileInfo}>Valgt bilde: {selectedFileName}</p>
+            )}
+          </li>
+          <Button submit important>
+            Last opp reisemål
+          </Button>
         </ol>
       </form>
       <div className={styles.destinationContainer}>
@@ -229,21 +228,27 @@ const AdminPage = () => {
               TAGS:{" "}
               {dest.tags &&
                 dest.tags.map((tag, index) => (
-                  <span key={tag} className={styles.tag}
-                  style={{
-                    cursor: "pointer",
-                    padding: "5px",
-                    border: selectedTags.includes(tag)
-                      ? "2px solid blue"
-                      : "1px solid grey",
-                    margin: "2px",
-                  }}>
+                  <span
+                    key={tag}
+                    className={styles.tag}
+                    style={{
+                      cursor: "pointer",
+                      padding: "5px",
+                      border: selectedTags.includes(tag)
+                        ? "2px solid blue"
+                        : "1px solid grey",
+                      margin: "2px",
+                    }}
+                  >
                     {tag}
                     {index < dest.tags.length - 1 ? "" : ""}
                   </span>
                 ))}
             </p>
-            <button className={styles.deleteButton} onClick={() => dest.id && handleDelete(dest.id)}>
+            <button
+              className={styles.deleteButton}
+              onClick={() => dest.id && handleDelete(dest.id)}
+            >
               Slett
             </button>
           </div>

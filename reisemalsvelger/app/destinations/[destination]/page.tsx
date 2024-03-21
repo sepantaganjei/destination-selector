@@ -13,6 +13,7 @@ import {
   removeDestinationFromUser,
   getAllDestinationsFromUser,
 } from "@/app/firebaseAPI"; // Anta denne importstien
+import Button from "@/components/Button";
 
 const DestinationPage = ({ params }: any) => {
   const { destination } = params;
@@ -186,7 +187,7 @@ const DestinationPage = ({ params }: any) => {
           ))
         )}
       </div>
-      <div className={styles.commentSection}>
+      <div>
         <form onSubmit={handleSubmit}>
           <h2>Gi din anmeldelse</h2>
           <div className="App">
@@ -200,7 +201,7 @@ const DestinationPage = ({ params }: any) => {
             ref={textfieldref}
             onChange={handleChange}
           />
-          <button type="submit">Legg til anmeldelse</button>
+          <Button submit>Legg til anmeldelse</Button>
         </form>
       </div>
     </div>

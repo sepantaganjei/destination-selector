@@ -22,6 +22,8 @@ import { Rating } from "react-simple-star-rating";
 import { setGlobal } from "next/dist/trace";
 import { Preference } from "@/types/Preference";
 import { TravelDestination } from "@/types/TravelDestination";
+import Button from "@/components/Button";
+import Tag from "@/components/Tag";
 
 interface ReviewDetails {
   rating: number;
@@ -180,37 +182,27 @@ const UserPage = () => {
           <h1>Brukerprofil</h1>
           <p>Velkommen, {user.email}</p>
           {user?.uid === ADMIN_UID ? (
-            <button onClick={handleAdmin} className={styles.adminbutton}>
+            <Button onClick={handleAdmin}>
               Administrer reisedestinasjoner
-            </button>
+            </Button>
           ) : (
-            <button onClick={handleAdmin} className={styles.adminbutton}>
-              Legg til destinasjoner
-            </button>
+            <Button onClick={handleAdmin}>Legg til destinasjoner</Button>
           )}
           <div>
             <h3>Mine preferanser</h3>
             <form onSubmit={handleSubmit} className={styles.form}>
               {tags.map((tag, index) => (
-                <span
+                <Tag
                   key={index}
                   onClick={() => toggleTag(tag)}
-                  className={styles.tag}
-                  style={{
-                    cursor: "pointer",
-                    padding: "5px",
-                    border: selectedTags.includes(tag)
-                      ? "2px solid blue"
-                      : "1px solid grey",
-                    margin: "2px",
-                  }}
+                  active={selectedTags.includes(tag)}
                 >
                   {tag}
-                </span>
+                </Tag>
               ))}
-              <button className={styles.button} type="submit">
+              <Button className={styles.updateButton} important submit>
                 Oppdater
-              </button>
+              </Button>
             </form>
           </div>
           <h3>Mine anmeldelser:</h3>
@@ -227,14 +219,14 @@ const UserPage = () => {
                     />
                   </p>
                   <p>Anmeldelse: {reviewDetails.description}</p>
-                  <button
-                    className={styles.deleteButton}
+                  <Button
                     onClick={() =>
                       reviewDetails.id && handleDelete(reviewDetails.id)
                     }
+                    danger
                   >
                     Fjern anmeldelse
-                  </button>
+                  </Button>
                 </div>
               ))
             ) : (

@@ -1,104 +1,105 @@
 /* styles.module.css */
 
 .formContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 20px;
-  }
-  
-  .inputField, .submitButton, .fileInput {
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .submitButton {
-    margin: 10px 0 0 0;
-    padding: 20px;
-    border-radius: 5px;
-    border: none;
-    background-color: #70d559;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .tag {
-    cursor: pointer;
-    padding: 5px;
-    margin: 2px;
-    border-radius: 5px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px;
+}
 
+.inputField,
+.submitButton,
+.fileInput {
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 
-    .tagsContainer {
-        margin-left: 0px;
-    }
+.submitButton {
+  margin: 10px 0 0 0;
+  padding: 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #70d559;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
 
-    .tagsBox {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px; /* Gir litt plass mellom tags */
-    }
-  
-  .tagSelected {
-    border: 2px solid blue;
-  }
-  
-  .tagNotSelected {
-    border: 1px solid grey;
-  }
+.tag {
+  cursor: pointer;
+  padding: 5px;
+  margin: 2px;
+  border-radius: 5px;
+}
 
-  .fileInputLabel {
-    display: inline-block;
-    padding: 8px 12px;
-    cursor: pointer;
-    border: 1px solid #aeaeae;
-    border-radius: 5px;
-    background-color: #f5f5f5;
-    color: #aeaeae;
-    margin-top: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-  
-    /* Lignende effekter som en <button> */
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-  }
-  
-  .fileInputLabel:hover,
-  .fileInputLabel:focus {
-    background-color: #929292;
-    border: 2px solid #929292;
-    color: white;
-  }
-  
-  
-  .destinationContainer {
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 5px;
-  }
-  
-  .destinationImage {
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-  }
-  
-  .deleteButton {
-    background-color: #ff4d4d;
-    color: white;
-    padding: 8px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
+.tagsContainer {
+  margin-left: 0px;
+}
+
+.tagsBox {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; /* Gir litt plass mellom tags */
+}
+
+.tagSelected {
+  border: 2px solid blue;
+}
+
+.tagNotSelected {
+  border: 1px solid grey;
+}
+
+.fileInputLabel {
+  display: inline-block;
+  padding: 8px 12px;
+  cursor: pointer;
+  border: 1px solid #aeaeae;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  color: #aeaeae;
+  margin-top: 5px;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+
+  border-radius: 50px;
+  padding: 0.4rem 1rem;
+  background-color: var(--button-color);
+  font-weight: bold;
+  border-color: var(--border-color);
+  color: var(--color-foreground);
+  margin-bottom: 1rem;
+}
+
+.fileInputLabel:hover,
+.fileInputLabel:focus {
+  background-color: #929292;
+  color: white;
+}
+
+.destinationContainer {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.destinationImage {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+}
+
+.deleteButton {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
